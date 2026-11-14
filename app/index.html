@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>My App</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,sans-serif;background:#0d0d1a;color:#eaeaea;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+h1{font-size:1.8rem;margin-bottom:12px;color:#4FC3F7}
+p{color:rgba(255,255,255,.6);font-size:.95rem;line-height:1.5;margin-bottom:20px}
+.box{background:#1a1a2e;border-radius:12px;padding:20px;max-width:420px;width:100%}
+.btn{min-height:44px;border-radius:50px;padding:0 24px;background:#0f3460;color:#fff;font-weight:600;font-size:1rem;display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer}
+.btn:active{opacity:.7}
+#count{font-size:2.5rem;font-weight:700;color:#69F0AE;margin:12px 0}
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>My App v1</h1>
+    <p>This is your app. Replace this content with whatever you want. When you change it, bump <b>version.json</b> to <b>2</b>, <b>3</b>, etc.</p>
+    <div id="count">0</div>
+    <button class="btn" onclick="tap()">Tap me</button>
+  </div>
+<script>
+var n = 0;
+function tap(){
+  n++;
+  document.getElementById('count').textContent = n;
+  if (typeof iappyx !== 'undefined') {
+    try { iappyx.vibration.click(); } catch(e){}
+  }
+}
+</script>
+</body>
+</html>

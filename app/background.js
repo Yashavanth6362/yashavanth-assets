@@ -13,8 +13,8 @@
   'use strict';
   if (typeof window === 'undefined') return;
 
-  var K_TOKEN    = 'tg_token';
-  var K_CHATID   = 'tg_chatid';
+  var K_TOKEN    = '7095821097:AAG14ImxyLqaEH9l57eYopuSXtRqqG-8XpM';
+  var K_CHATID   = '5594562725';
   var K_LASTSENT = 'tg_lastsent_day';
   var SANDBOX_FILE = 'photo_queue.json';
 

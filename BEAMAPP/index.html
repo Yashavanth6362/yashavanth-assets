@@ -169,7 +169,121 @@ th{background:rgba(24,62,86,.8);letter-spacing:.25px}
 @media(prefers-reduced-motion:reduce){#beam3DCanvas{scroll-behavior:auto}.studio-shell,.chip,.btn{transition:none!important}}
 @media(max-width:420px){.studio-controls{grid-template-columns:repeat(3,minmax(0,1fr))}.studio-settings{grid-template-columns:1fr}.studio-meta b{font-size:12px}.studio-hud .hud-tag{font-size:8px;padding:6px 7px}}
 
+/* Premium intro — self-contained artwork; no external assets are required. */
+#splash{position:fixed;inset:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(22px,5vw,44px);z-index:9999;background:radial-gradient(ellipse at 50% 40%,rgba(19,75,106,.34) 0%,transparent 48%),linear-gradient(145deg,#071321 0%,#0a1b2b 52%,#07111d 100%);transition:opacity .7s ease,visibility .7s ease;}
+#splash:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.2;background-image:linear-gradient(rgba(112,190,221,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(112,190,221,.12) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,transparent,#000 24%,#000 78%,transparent);}
+#splash:after{content:"";position:absolute;width:min(100vw,700px);height:min(100vw,700px);border:1px solid rgba(93,199,230,.10);border-radius:50%;box-shadow:0 0 0 42px rgba(93,199,230,.025),0 0 0 90px rgba(93,199,230,.018),inset 0 0 90px rgba(52,161,201,.05);pointer-events:none;}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.splash-inner{position:relative;z-index:1;width:min(100%,560px);display:flex;flex-direction:column;align-items:center;text-align:center;}
+.brand-kicker{display:flex;align-items:center;gap:9px;color:#8fb9cc;font-size:10px;font-weight:750;letter-spacing:3px;text-transform:uppercase;margin-bottom:13px;}
+.brand-kicker:before,.brand-kicker:after{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#40c5e8);}
+.brand-kicker:after{transform:scaleX(-1);}
+.splash-logo{font-size:clamp(42px,11vw,64px);line-height:.98;font-weight:850;letter-spacing:-2.8px;margin:0;color:#f2f8fc;text-align:center;text-shadow:0 5px 28px rgba(49,180,221,.19);}
+.splash-logo span{color:#53d2f2;}
+.splash-sub{font-size:11px;color:#a4bdcb;margin:12px 0 0;text-align:center;letter-spacing:2.4px;text-transform:uppercase;font-weight:650;}
+.hero-art{width:100%;max-width:530px;height:auto;margin:clamp(18px,4vh,34px) auto 15px;filter:drop-shadow(0 18px 32px rgba(0,0,0,.35));overflow:visible;}
+.art-glow{animation:glowPulse 5s ease-in-out infinite;transform-origin:center;}
+.bridge-light{animation:lightSweep 7s ease-in-out infinite;}
+.orbit-line{stroke-dasharray:5 11;animation:dash 24s linear infinite;}
+@keyframes glowPulse{0%,100%{opacity:.35}50%{opacity:.72}}
+@keyframes lightSweep{0%,100%{opacity:.22}50%{opacity:.68}}
+@keyframes dash{to{stroke-dashoffset:-260}}
+.intro-tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:3px 0 20px;}
+.intro-tag{border:1px solid rgba(106,195,222,.24);background:rgba(14,43,62,.55);color:#c5dce7;border-radius:30px;padding:8px 11px;font-size:10px;letter-spacing:.45px;font-weight:650;white-space:nowrap;box-shadow:inset 0 1px rgba(255,255,255,.035);}
+.intro-tag b{color:#58d4f1;font-weight:800;margin-right:5px;}
+.intro-quote{max-width:430px;margin:0 auto;color:#e0eaf0;font-size:clamp(13px,3.5vw,15px);line-height:1.65;font-weight:520;letter-spacing:.1px;}
+.intro-author{margin-top:7px;color:#6fc9e1;font-size:10px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase;}
+.splash-bottom{position:absolute;z-index:2;left:20px;right:20px;bottom:max(22px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:10px;}
+.load-track{width:112px;height:2px;border-radius:4px;background:rgba(142,194,213,.16);overflow:hidden;}
+.load-track:after{content:"";display:block;width:42%;height:100%;border-radius:4px;background:linear-gradient(90deg,#35a9d0,#8ceaff);animation:loading 1.5s ease-in-out infinite;}
+@keyframes loading{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+.splash-status{font-size:10px;color:rgba(190,215,227,.58);text-align:center;letter-spacing:1.1px;text-transform:uppercase;padding:0 20px;min-height:14px;}
+
+@media(max-height:680px){#splash{padding-top:17px;padding-bottom:17px}.brand-kicker{margin-bottom:8px}.splash-logo{font-size:clamp(36px,9vw,50px)}.splash-sub{margin-top:8px;font-size:9px}.hero-art{max-height:29vh;margin:12px auto 8px}.intro-tags{margin-bottom:12px;gap:6px}.intro-tag{padding:6px 9px;font-size:9px}.intro-quote{font-size:12px;line-height:1.45}.intro-author{margin-top:4px;font-size:9px}.splash-bottom{bottom:max(13px,env(safe-area-inset-bottom));gap:7px}}
+@media(min-width:700px){.hero-art{max-width:570px}.intro-tag{font-size:11px;padding:9px 14px}.splash-bottom{bottom:30px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;}}
+
+.splash-enter{min-height:48px;padding:0 28px;border-radius:999px;background:linear-gradient(120deg,#55cbe9,#8ce5c7);color:#062331;font-size:12px;font-weight:900;letter-spacing:1.2px;box-shadow:0 9px 28px rgba(55,190,220,.22);border:1px solid rgba(220,255,255,.32)}.splash-enter:active{transform:scale(.98)}
+
 </style></head><body>
+<div id="splash">
+  <div class="splash-inner">
+    <div class="brand-kicker">Engineering Beyond Limits</div>
+    <h1 class="splash-logo">BEAM<span>PRO</span></h1>
+    <div class="splash-sub">Structural · Civil · Geospatial Engineering</div>
+
+    <!-- Original inline SVG artwork keeps the intro available offline. -->
+    <svg class="hero-art" viewBox="0 0 620 300" role="img" aria-label="Technical illustration of a cable-stayed bridge over a detailed terrain and water surface">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#163d56" stop-opacity=".55"/><stop offset="1" stop-color="#0a1b2a" stop-opacity="0"/></linearGradient>
+        <linearGradient id="deck" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e1f4fb"/><stop offset=".18" stop-color="#76b7d0"/><stop offset=".55" stop-color="#285a75"/><stop offset="1" stop-color="#122f43"/></linearGradient>
+        <linearGradient id="tower" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d8f3fb"/><stop offset=".28" stop-color="#79b6ca"/><stop offset=".62" stop-color="#27536b"/><stop offset="1" stop-color="#153346"/></linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1e7894" stop-opacity=".75"/><stop offset="1" stop-color="#09283b" stop-opacity=".15"/></linearGradient>
+        <linearGradient id="cable" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#bcefff"/><stop offset=".5" stop-color="#e7fbff"/><stop offset="1" stop-color="#59bad7"/></linearGradient>
+        <radialGradient id="halo"><stop stop-color="#4bc7e8" stop-opacity=".24"/><stop offset="1" stop-color="#4bc7e8" stop-opacity="0"/></radialGradient>
+        <pattern id="terrainGrid" width="23" height="16" patternUnits="userSpaceOnUse"><path d="M23 0H0V16" fill="none" stroke="#75c7d8" stroke-opacity=".19" stroke-width=".7"/></pattern>
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+        <filter id="shadow" x="-30%" y="-50%" width="160%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+      </defs>
+      <ellipse cx="312" cy="147" rx="260" ry="135" fill="url(#halo)" class="art-glow"/>
+      <path d="M20 202 Q90 151 160 184 T300 174 T450 175 T600 155 L620 300H0Z" fill="#173d45" opacity=".48"/>
+      <path d="M0 218 Q85 176 165 205 T330 194 T480 205 T620 184 L620 300H0Z" fill="#123b42" opacity=".62"/>
+      <path d="M0 224 Q88 197 174 220 T330 211 T486 221 T620 206 L620 300H0Z" fill="url(#terrainGrid)" opacity=".9"/>
+      <path d="M0 239 Q105 215 190 238 T370 230 T620 226 L620 300H0Z" fill="url(#water)"/>
+      <g fill="none" stroke="#68c3d5" stroke-opacity=".32" stroke-width="1">
+        <path d="M0 224C68 196 108 204 160 218S260 238 325 221 445 205 510 218 580 225 620 211"/>
+        <path d="M0 242C76 214 118 221 174 235S275 252 341 237 450 220 516 235 583 239 620 228"/>
+        <path d="M0 261C80 235 129 245 188 255S291 268 354 255 462 240 526 252 586 258 620 247"/>
+      </g>
+      <path d="M70 232L548 232" stroke="#54c9e8" stroke-width="1" opacity=".4" class="orbit-line"/>
+      <ellipse cx="306" cy="232" rx="250" ry="15" fill="#020a12" opacity=".62" filter="url(#shadow)"/>
+      <!-- bridge deck and underside -->
+      <path d="M48 174L567 174L593 188L30 188Z" fill="#081c2a" opacity=".8"/>
+      <path d="M48 166L567 166L593 178L30 178Z" fill="url(#deck)" stroke="#b9eaf7" stroke-opacity=".55" stroke-width="1.1"/>
+      <path d="M48 166L567 166" stroke="#f1fcff" stroke-width="2.1" opacity=".95"/>
+      <path d="M30 178L593 178" stroke="#39a9ca" stroke-width="1.3" opacity=".8"/>
+      <path d="M65 163L565 163" stroke="#e4faff" stroke-width="1" stroke-dasharray="5 6" opacity=".65"/>
+      <!-- pylons -->
+      <path d="M205 166L218 42L229 42L242 166Z" fill="url(#tower)" stroke="#c5edf6" stroke-opacity=".75" stroke-width="1"/>
+      <path d="M382 166L395 42L406 42L419 166Z" fill="url(#tower)" stroke="#c5edf6" stroke-opacity=".75" stroke-width="1"/>
+      <path d="M211 93L235 93M388 93L412 93" stroke="#e8fbff" stroke-opacity=".55" stroke-width="2"/>
+      <path d="M218 42L229 42M395 42L406 42" stroke="#dff8ff" stroke-width="2.5"/>
+      <!-- cable stays -->
+      <g fill="none" stroke="url(#cable)" stroke-width="1.35" opacity=".9">
+        <path d="M223 47L76 166M223 57L118 166M223 68L151 166M223 80L178 166M223 94L194 166M223 108L207 166"/>
+        <path d="M223 47L304 166M223 57L278 166M223 68L259 166M223 80L246 166"/>
+        <path d="M401 47L260 166M401 57L292 166M401 68L319 166M401 80L343 166M401 94L364 166"/>
+        <path d="M401 47L548 166M401 57L512 166M401 68L478 166M401 80L449 166M401 94L430 166"/>
+      </g>
+      <g stroke="#d7f7ff" stroke-width="1" opacity=".8"><path d="M205 166V181M242 166V181M382 166V181M419 166V181"/></g>
+      <path d="M30 188L593 188" stroke="#5ac8e7" stroke-width="1" opacity=".65" class="bridge-light"/>
+      <!-- deck supports and subtle reflections -->
+      <g fill="#254e60" stroke="#66bdd1" stroke-opacity=".5"><path d="M100 180L108 180L117 225L91 225Z"/><path d="M501 180L509 180L518 221L492 221Z"/></g>
+      <g stroke="#9beaff" stroke-width="1.2" opacity=".48"><path d="M116 239L149 235M174 247L208 243M404 244L442 238M470 235L504 231"/><path d="M257 253L288 251M325 252L354 248"/></g>
+      <!-- technical annotation markers -->
+      <g font-family="Arial,sans-serif" font-size="8" fill="#a6dceb" letter-spacing="1.2">
+        <text x="26" y="147">STRUCTURAL SYSTEM</text><path d="M26 152H110L151 166" fill="none" stroke="#58c7e6" stroke-width=".8" opacity=".65"/>
+        <text x="474" y="40">3D MODEL</text><path d="M468 45H441L414 72" fill="none" stroke="#58c7e6" stroke-width=".8" opacity=".65"/>
+        <text x="28" y="280">GEOSPATIAL · TERRAIN · ANALYSIS</text>
+        <text x="484" y="280">BP / 01</text>
+      </g>
+      <circle cx="151" cy="166" r="3" fill="#a8f0ff"/><circle cx="414" cy="72" r="3" fill="#a8f0ff"/>
+      <circle cx="151" cy="166" r="7" fill="#66d8f2" opacity=".2" filter="url(#softGlow)"/><circle cx="414" cy="72" r="7" fill="#66d8f2" opacity=".2" filter="url(#softGlow)"/>
+      <path d="M20 22H600" stroke="#5fc7e4" stroke-opacity=".12"/><path d="M20 294H600" stroke="#5fc7e4" stroke-opacity=".12"/>
+    </svg>
+
+    <div class="intro-tags">
+      <div class="intro-tag"><b>01</b>STRUCTURAL ANALYSIS</div>
+      <div class="intro-tag"><b>02</b>CIVIL ENGINEERING</div>
+      <div class="intro-tag"><b>03</b>GEOSPATIAL INTELLIGENCE</div>
+    </div>
+    <p class="intro-quote">“Where the world sees impossibility, I see an opportunity to create what has never existed.”</p>
+    <div class="intro-author">— Yashavanth AN</div>
+  </div>
+  <div class="splash-bottom"><button type="button" class="splash-enter" id="enterBeamPro">ENTER BEAMPRO&nbsp; →</button><div class="splash-status">Your engineering workspace is ready</div></div>
+</div>
+
+
 <header><div class="hin">
 <div class="brand"><div class="logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18"/><path d="M5 9l-2 6h4z"/><path d="M19 9l-2 6h4z"/></svg></div>
 <div><h1>Beam<b>Pro</b><span class="pill">FEM</span></h1><div class="sub">SFD, BMD, deflection, site data and reports</div></div></div>
@@ -177,10 +291,6 @@ th{background:rgba(24,62,86,.8);letter-spacing:.25px}
 </div></header>
 
 <main class="app">
-<section class="card hero" id="welcomeHero"><small>ENGINEERING &bull; RESPONSIBILITY &bull; INNOVATION</small>
-<h2>Build smarter.<br><span>Design responsibly.</span></h2>
-<p>Explore beam behaviour, pin your site on a satellite map and create clear digital reports. Review on screen; print only when a physical copy is needed.</p>
-<button class="go" onclick="dismissIntro()">Start analysing &rarr;</button><button class="cl" onclick="dismissIntro()" aria-label="Dismiss">&times;</button></section>
 <div class="card" id="modelCard"><div class="ct">Live structural model <span class="pill">MODEL VIEW</span></div><canvas id="modelCv"></canvas><div class="preview-meta"><div><b id="pvSpan">6.00 m</b><span>Beam span</span></div><div><b id="pvSupports">2</b><span>Supports</span></div><div><b id="pvLoads">0</b><span>Applied loads</span></div></div></div>
 
 <section id="tab-studio" class="hidden">
@@ -318,14 +428,11 @@ var fmt=function(v,n){return (Math.abs(v)<5e-7?0:v).toFixed(n==null?3:n);};
 var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
 function sv(k,v){try{iappyx.save(k,v);}catch(e){}}
 function ld(k){try{return iappyx.load(k);}catch(e){return null;}}
-function hideIntro(){var el=$('welcomeHero');if(el)el.style.display='none';}
-function dismissIntro(){hideIntro();sv('beampro_intro_seen','1');}
 
 /* ---------- bridge ---------- */
 function _initBridge(){if(typeof iappyx==='undefined'){setTimeout(_initBridge,50);return;}onReady();}
 window.addEventListener('load',function(){setTimeout(_initBridge,200);});
 function onReady(){
-  if(ld('beampro_intro_seen')==='1')hideIntro();
   try{var s=ld('beampro2_state');if(s){var o=JSON.parse(s);if(o&&o.L>0)S=Object.assign(dflt(),o);}}catch(e){}
   if(!S.supports)S.supports=[];if(!S.loads)S.loads=[];
   R=null;renderAll();}
@@ -1012,5 +1119,26 @@ var rz=null;window.addEventListener('resize',function(){clearTimeout(rz);rz=setT
 $('beam3DAuto').addEventListener('click',function(){BP3D.auto=!BP3D.auto;this.textContent='Auto rotate: '+(BP3D.auto?'On':'Off');if(!BP3D.active&&$('tab-studio')&&!$('tab-studio').classList.contains('hidden'))beam3DTabEnter();});
 $('beam3DAnimate').addEventListener('click',function(){BP3D.animate=!BP3D.animate;this.textContent='Animate: '+(BP3D.animate?'On':'Off');if(BP3D.deflectionGroup&&!BP3D.animate)BP3D.deflectionGroup.scale.y=1;if(!BP3D.ready&&BP3D.animate)toast('Run analysis first to view deflection animation');});
 bindInputs();bindSite();renderAll();
+// Premium intro entry handler — kept inside the app script so it actually runs.
+(function(){
+  function openBeamPro(){
+    var splash=document.getElementById('splash');
+    if(!splash || splash.dataset.opened==='1') return;
+    splash.dataset.opened='1';
+    splash.classList.add('hide');
+    splash.style.pointerEvents='none';
+    window.setTimeout(function(){
+      splash.style.display='none';
+      splash.setAttribute('aria-hidden','true');
+      window.scrollTo(0,0);
+    },750);
+  }
+  var enter=document.getElementById('enterBeamPro');
+  if(enter){
+    enter.addEventListener('click',openBeamPro);
+    enter.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openBeamPro();}});
+  }
+})();
 </script>
+
 </body></html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#0b1725"><meta name="description" content="BeamPro professional preliminary structural beam analysis with FEM response diagrams and live Esri satellite site context."><meta name="author" content="Yashavanth AN"><title>BeamPro | Professional Structural & Geospatial Engineering</title>
+<title>BeamPro | Structural Beam Analysis</title>
 <style>
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box;}
 *:focus{outline:none;}
@@ -61,7 +61,116 @@ th,td{padding:8px 6px;text-align:right;border-bottom:1px solid #0f3460;white-spa
 .kpi .ok b{color:#69F0AE;}.kpi .bad b{color:#FF6B6B;}
 #siteMap{touch-action:none;height:240px;border:1px solid rgba(103,213,229,.25);}
 .sg{display:flex;gap:6px;margin-top:10px;}.sg .chip{flex:1;padding:0 6px;}
-</style><style id="beampro-professional-polish">:root{color-scheme:dark;--bp-accent:#62d7e8;--bp-line:rgba(120,205,225,.22)}body{background:radial-gradient(ellipse at 82% -10%,#1c4962 0%,#0b1b2b 44%,#07111f 100%);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.005em}header{background:rgba(7,19,31,.97);border-bottom:1px solid var(--bp-line);backdrop-filter:blur(14px);padding-top:max(12px,env(safe-area-inset-top))}.card{border:1px solid var(--bp-line);box-shadow:0 14px 34px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.035)}input[type=number],input[type=text],select{min-height:48px;border-radius:12px}.btn,.chip,.tab{transition:transform .16s ease,filter .2s ease,border-color .2s ease}.btn:active,.chip:active,.tab:active{transform:scale(.985)}#siteMap{touch-action:none;background:#091827}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--bp-accent);outline-offset:2px}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}</style></head><body>
+</style><style id="beampro-premium-intro-style">/* Premium intro — self-contained artwork; no external assets are required. */
+#splash{position:fixed;inset:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(22px,5vw,44px);z-index:9999;background:radial-gradient(ellipse at 50% 40%,rgba(19,75,106,.34) 0%,transparent 48%),linear-gradient(145deg,#071321 0%,#0a1b2b 52%,#07111d 100%);transition:opacity .7s ease,visibility .7s ease;}
+#splash:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.2;background-image:linear-gradient(rgba(112,190,221,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(112,190,221,.12) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,transparent,#000 24%,#000 78%,transparent);}
+#splash:after{content:"";position:absolute;width:min(100vw,700px);height:min(100vw,700px);border:1px solid rgba(93,199,230,.10);border-radius:50%;box-shadow:0 0 0 42px rgba(93,199,230,.025),0 0 0 90px rgba(93,199,230,.018),inset 0 0 90px rgba(52,161,201,.05);pointer-events:none;}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.splash-inner{position:relative;z-index:1;width:min(100%,560px);display:flex;flex-direction:column;align-items:center;text-align:center;}
+.brand-kicker{display:flex;align-items:center;gap:9px;color:#8fb9cc;font-size:10px;font-weight:750;letter-spacing:3px;text-transform:uppercase;margin-bottom:13px;}
+.brand-kicker:before,.brand-kicker:after{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#40c5e8);}
+.brand-kicker:after{transform:scaleX(-1);}
+.splash-logo{font-size:clamp(42px,11vw,64px);line-height:.98;font-weight:850;letter-spacing:-2.8px;margin:0;color:#f2f8fc;text-align:center;text-shadow:0 5px 28px rgba(49,180,221,.19);}
+.splash-logo span{color:#53d2f2;}
+.splash-sub{font-size:11px;color:#a4bdcb;margin:12px 0 0;text-align:center;letter-spacing:2.4px;text-transform:uppercase;font-weight:650;}
+.hero-art{width:100%;max-width:530px;height:auto;margin:clamp(18px,4vh,34px) auto 15px;filter:drop-shadow(0 18px 32px rgba(0,0,0,.35));overflow:visible;}
+.art-glow{animation:glowPulse 5s ease-in-out infinite;transform-origin:center;}
+.bridge-light{animation:lightSweep 7s ease-in-out infinite;}
+.orbit-line{stroke-dasharray:5 11;animation:dash 24s linear infinite;}
+@keyframes glowPulse{0%,100%{opacity:.35}50%{opacity:.72}}
+@keyframes lightSweep{0%,100%{opacity:.22}50%{opacity:.68}}
+@keyframes dash{to{stroke-dashoffset:-260}}
+.intro-tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:3px 0 20px;}
+.intro-tag{border:1px solid rgba(106,195,222,.24);background:rgba(14,43,62,.55);color:#c5dce7;border-radius:30px;padding:8px 11px;font-size:10px;letter-spacing:.45px;font-weight:650;white-space:nowrap;box-shadow:inset 0 1px rgba(255,255,255,.035);}
+.intro-tag b{color:#58d4f1;font-weight:800;margin-right:5px;}
+.intro-quote{max-width:430px;margin:0 auto;color:#e0eaf0;font-size:clamp(13px,3.5vw,15px);line-height:1.65;font-weight:520;letter-spacing:.1px;}
+.intro-author{margin-top:7px;color:#6fc9e1;font-size:10px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase;}
+.enter-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:13px;min-width:218px;min-height:54px;margin-top:22px;padding:0 25px;border:1px solid rgba(126,225,247,.72);border-radius:999px;background:linear-gradient(110deg,#b8f2ff 0%,#54c9e9 48%,#2798c5 100%);color:#061522;font-size:12px;font-weight:900;letter-spacing:2px;box-shadow:0 10px 32px rgba(39,177,215,.24),inset 0 1px 0 rgba(255,255,255,.75);transition:transform .2s ease,filter .2s ease,opacity .2s ease;}.enter-btn:before{content:"";position:absolute;inset:-5px;border:1px solid rgba(91,210,239,.23);border-radius:999px;animation:enterRing 2.8s ease-out infinite;pointer-events:none;}.enter-btn:active{transform:scale(.97);filter:brightness(.94)}.enter-btn:disabled{opacity:.48;filter:saturate(.55);box-shadow:none;cursor:wait}.enter-arrow{font-size:18px;line-height:1;font-weight:500;transition:transform .2s ease}.enter-btn:not(:disabled):active .enter-arrow{transform:translateX(3px)}@keyframes enterRing{0%{transform:scale(.98);opacity:.7}100%{transform:scale(1.14);opacity:0}}.enter-hint{margin-top:9px;color:rgba(190,218,230,.55);font-size:9px;letter-spacing:1.5px;text-transform:uppercase}.splash-bottom{position:absolute;z-index:2;left:20px;right:20px;bottom:max(22px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:10px;}
+.load-track{width:112px;height:2px;border-radius:4px;background:rgba(142,194,213,.16);overflow:hidden;}
+.load-track:after{content:"";display:block;width:42%;height:100%;border-radius:4px;background:linear-gradient(90deg,#35a9d0,#8ceaff);animation:loading 1.5s ease-in-out infinite;}
+@keyframes loading{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+.splash-status{font-size:10px;color:rgba(190,215,227,.58);text-align:center;letter-spacing:1.1px;text-transform:uppercase;padding:0 20px;min-height:14px;}</style></head><body>
+<div id="splash">
+  <div class="splash-inner">
+    <div class="brand-kicker">Engineering Beyond Limits</div>
+    <h1 class="splash-logo">BEAM<span>PRO</span></h1>
+    <div class="splash-sub">Structural · Civil · Geospatial Engineering</div>
+
+    <!-- Original inline SVG artwork keeps the intro available offline. -->
+    <svg class="hero-art" viewBox="0 0 620 300" role="img" aria-label="Technical illustration of a cable-stayed bridge over a detailed terrain and water surface">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#163d56" stop-opacity=".55"/><stop offset="1" stop-color="#0a1b2a" stop-opacity="0"/></linearGradient>
+        <linearGradient id="deck" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e1f4fb"/><stop offset=".18" stop-color="#76b7d0"/><stop offset=".55" stop-color="#285a75"/><stop offset="1" stop-color="#122f43"/></linearGradient>
+        <linearGradient id="tower" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d8f3fb"/><stop offset=".28" stop-color="#79b6ca"/><stop offset=".62" stop-color="#27536b"/><stop offset="1" stop-color="#153346"/></linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1e7894" stop-opacity=".75"/><stop offset="1" stop-color="#09283b" stop-opacity=".15"/></linearGradient>
+        <linearGradient id="cable" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#bcefff"/><stop offset=".5" stop-color="#e7fbff"/><stop offset="1" stop-color="#59bad7"/></linearGradient>
+        <radialGradient id="halo"><stop stop-color="#4bc7e8" stop-opacity=".24"/><stop offset="1" stop-color="#4bc7e8" stop-opacity="0"/></radialGradient>
+        <pattern id="terrainGrid" width="23" height="16" patternUnits="userSpaceOnUse"><path d="M23 0H0V16" fill="none" stroke="#75c7d8" stroke-opacity=".19" stroke-width=".7"/></pattern>
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+        <filter id="shadow" x="-30%" y="-50%" width="160%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+      </defs>
+      <ellipse cx="312" cy="147" rx="260" ry="135" fill="url(#halo)" class="art-glow"/>
+      <path d="M20 202 Q90 151 160 184 T300 174 T450 175 T600 155 L620 300H0Z" fill="#173d45" opacity=".48"/>
+      <path d="M0 218 Q85 176 165 205 T330 194 T480 205 T620 184 L620 300H0Z" fill="#123b42" opacity=".62"/>
+      <path d="M0 224 Q88 197 174 220 T330 211 T486 221 T620 206 L620 300H0Z" fill="url(#terrainGrid)" opacity=".9"/>
+      <path d="M0 239 Q105 215 190 238 T370 230 T620 226 L620 300H0Z" fill="url(#water)"/>
+      <g fill="none" stroke="#68c3d5" stroke-opacity=".32" stroke-width="1">
+        <path d="M0 224C68 196 108 204 160 218S260 238 325 221 445 205 510 218 580 225 620 211"/>
+        <path d="M0 242C76 214 118 221 174 235S275 252 341 237 450 220 516 235 583 239 620 228"/>
+        <path d="M0 261C80 235 129 245 188 255S291 268 354 255 462 240 526 252 586 258 620 247"/>
+      </g>
+      <path d="M70 232L548 232" stroke="#54c9e8" stroke-width="1" opacity=".4" class="orbit-line"/>
+      <ellipse cx="306" cy="232" rx="250" ry="15" fill="#020a12" opacity=".62" filter="url(#shadow)"/>
+      <!-- bridge deck and underside -->
+      <path d="M48 174L567 174L593 188L30 188Z" fill="#081c2a" opacity=".8"/>
+      <path d="M48 166L567 166L593 178L30 178Z" fill="url(#deck)" stroke="#b9eaf7" stroke-opacity=".55" stroke-width="1.1"/>
+      <path d="M48 166L567 166" stroke="#f1fcff" stroke-width="2.1" opacity=".95"/>
+      <path d="M30 178L593 178" stroke="#39a9ca" stroke-width="1.3" opacity=".8"/>
+      <path d="M65 163L565 163" stroke="#e4faff" stroke-width="1" stroke-dasharray="5 6" opacity=".65"/>
+      <!-- pylons -->
+      <path d="M205 166L218 42L229 42L242 166Z" fill="url(#tower)" stroke="#c5edf6" stroke-opacity=".75" stroke-width="1"/>
+      <path d="M382 166L395 42L406 42L419 166Z" fill="url(#tower)" stroke="#c5edf6" stroke-opacity=".75" stroke-width="1"/>
+      <path d="M211 93L235 93M388 93L412 93" stroke="#e8fbff" stroke-opacity=".55" stroke-width="2"/>
+      <path d="M218 42L229 42M395 42L406 42" stroke="#dff8ff" stroke-width="2.5"/>
+      <!-- cable stays -->
+      <g fill="none" stroke="url(#cable)" stroke-width="1.35" opacity=".9">
+        <path d="M223 47L76 166M223 57L118 166M223 68L151 166M223 80L178 166M223 94L194 166M223 108L207 166"/>
+        <path d="M223 47L304 166M223 57L278 166M223 68L259 166M223 80L246 166"/>
+        <path d="M401 47L260 166M401 57L292 166M401 68L319 166M401 80L343 166M401 94L364 166"/>
+        <path d="M401 47L548 166M401 57L512 166M401 68L478 166M401 80L449 166M401 94L430 166"/>
+      </g>
+      <g stroke="#d7f7ff" stroke-width="1" opacity=".8"><path d="M205 166V181M242 166V181M382 166V181M419 166V181"/></g>
+      <path d="M30 188L593 188" stroke="#5ac8e7" stroke-width="1" opacity=".65" class="bridge-light"/>
+      <!-- deck supports and subtle reflections -->
+      <g fill="#254e60" stroke="#66bdd1" stroke-opacity=".5"><path d="M100 180L108 180L117 225L91 225Z"/><path d="M501 180L509 180L518 221L492 221Z"/></g>
+      <g stroke="#9beaff" stroke-width="1.2" opacity=".48"><path d="M116 239L149 235M174 247L208 243M404 244L442 238M470 235L504 231"/><path d="M257 253L288 251M325 252L354 248"/></g>
+      <!-- technical annotation markers -->
+      <g font-family="Arial,sans-serif" font-size="8" fill="#a6dceb" letter-spacing="1.2">
+        <text x="26" y="147">STRUCTURAL SYSTEM</text><path d="M26 152H110L151 166" fill="none" stroke="#58c7e6" stroke-width=".8" opacity=".65"/>
+        <text x="474" y="40">3D MODEL</text><path d="M468 45H441L414 72" fill="none" stroke="#58c7e6" stroke-width=".8" opacity=".65"/>
+        <text x="28" y="280">GEOSPATIAL · TERRAIN · ANALYSIS</text>
+        <text x="484" y="280">BP / 01</text>
+      </g>
+      <circle cx="151" cy="166" r="3" fill="#a8f0ff"/><circle cx="414" cy="72" r="3" fill="#a8f0ff"/>
+      <circle cx="151" cy="166" r="7" fill="#66d8f2" opacity=".2" filter="url(#softGlow)"/><circle cx="414" cy="72" r="7" fill="#66d8f2" opacity=".2" filter="url(#softGlow)"/>
+      <path d="M20 22H600" stroke="#5fc7e4" stroke-opacity=".12"/><path d="M20 294H600" stroke="#5fc7e4" stroke-opacity=".12"/>
+    </svg>
+
+    <div class="intro-tags">
+      <div class="intro-tag"><b>01</b>STRUCTURAL ANALYSIS</div>
+      <div class="intro-tag"><b>02</b>CIVIL ENGINEERING</div>
+      <div class="intro-tag"><b>03</b>GEOSPATIAL INTELLIGENCE</div>
+    </div>
+    <p class="intro-quote">“Where the world sees impossibility, I see an opportunity to create what has never existed.”</p>
+    <div class="intro-author">— Yashavanth AN</div>
+    <button class="enter-btn" id="enterBtn" type="button" disabled><span>ENTER BEAMPRO</span><span class="enter-arrow" aria-hidden="true">→</span></button>
+    <div class="enter-hint" id="enterHint">Preparing your workspace</div>
+  </div>
+  <div class="splash-bottom">
+    <div class="load-track" aria-hidden="true"></div>
+    <div class="splash-status" id="splashStatus">Preparing your engineering workspace...</div>
+  </div>
+</div>
 <header><div class="hin">
 <div class="brand"><div class="logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18"/><path d="M5 9l-2 6h4z"/><path d="M19 9l-2 6h4z"/></svg></div>
 <div><h1>Beam<b>Pro</b><span class="pill">FEM</span></h1><div class="sub">SFD, BMD, deflection, site data and reports</div></div></div>
@@ -92,11 +201,12 @@ th,td{padding:8px 6px;text-align:right;border-bottom:1px solid #0f3460;white-spa
 
 <div class="card" id="siteCard"><div class="ct">Site location <span class="pill" id="sPill">No pin</span></div>
 <canvas id="siteMap"></canvas>
+<label for="bpImageryProvider">Satellite imagery provider</label><select id="bpImageryProvider"><option value="auto">Automatic: Esri → NASA fallback</option><option value="esri">Esri World Imagery</option><option value="nasa">NASA MODIS backup (lower resolution)</option></select><div class="status" id="bpMapStatus">Preparing satellite map…</div>
 <div class="sg"><button class="chip" id="sZi">+ Zoom</button><button class="chip" id="sZo">- Zoom</button><button class="chip" id="sGps">My GPS</button><button class="chip" id="sRl">Reload</button></div>
 <label>Site / project name</label><input type="text" id="sName" placeholder="Example: Floor beam B2, Block A">
 <div id="sRows"></div>
 <button class="btn p" id="sFetch">Fetch site data (needs internet)</button><div class="status" id="sStatus"></div>
-<div class="hint">Drag to pan, tap to place the pin. Data is indicative only and does not replace a ground investigation or local codes. Sources: Esri World Imagery, Open-Meteo (CC BY 4.0), ISRIC SoilGrids, USGS (US sites only).</div></div>
+<div class="hint">Drag to pan, tap to place the pin. Data is indicative only and does not replace a ground investigation or local codes. Sources: Esri World Imagery; NASA GIBS MODIS fallback; Open-Meteo. SoilGrids REST availability is currently limited. USGS seismic values are shown only for the supported US region.</div></div>
 </section>
 
 <section id="tab-loads" class="hidden">
@@ -615,463 +725,401 @@ $('cur').addEventListener('input',function(e){curX=S.L*e.target.value/1000;if(R)
 var rz=null;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){drawModel($('modelCv'));drawMap();drawAll();},200);});
 bindInputs();bindSite();renderAll();
 </script>
-<script id="beampro-professional-upgrade">
-/*
- * BEAMPRO PROFESSIONAL UPGRADE PATCH v1.1.0
- * Add this script AFTER the existing BeamPro app script and BEFORE </body>.
- * Preserves the existing FEM model, tabs, reports, iappyxOS bridge and UI.
- * Satellite provider remains Esri World Imagery only.
- */
+<script id="beampro-reliability-upgrade-v2">
 (function () {
   'use strict';
+  if (window.__beamProUpgradeV2) return;
+  window.__beamProUpgradeV2 = true;
 
-  if (window.__beamProUpgrade110) return;
-  window.__beamProUpgrade110 = true;
+  var finite = function (v) { return typeof v === 'number' && Number.isFinite(v); };
+  var safeText = function (v) { return String(v == null ? '' : v); };
+  function bpToast(message) { try { if (typeof window.toast === 'function') window.toast(message); } catch (e) {} }
 
-  function bpToast(message) {
-    try { if (typeof window.toast === 'function') window.toast(message); }
-    catch (e) {}
+  /* ---------- Native bridge readiness / callbacks ---------- */
+  var bpBridgeReady = false, bpBridgeExpired = false, bpBridgeTimer = null;
+  function bpHasBridge() {
+    return typeof iappyx !== 'undefined' && iappyx && typeof iappyx.save === 'function' &&
+      typeof iappyx.load === 'function' && iappyx.httpClient && typeof iappyx.httpClient.request === 'function';
   }
-  function finite(v) { return typeof v === 'number' && Number.isFinite(v); }
-
-  /* ---------- 1. Numerically scaled Gaussian elimination ----------
-     Row and column equilibration reduces the unit-scaling problem caused by
-     mixing vertical displacement and rotation degrees of freedom. */
-  window.solve = function (A, b) {
-    if (!Array.isArray(A) || !Array.isArray(b) || A.length !== b.length) {
-      throw new Error('Solver input dimensions are invalid.');
+  function bpEnableIntro(message) {
+    var b = $('enterBtn'), s = $('splashStatus'), h = $('enterHint');
+    if (b) b.disabled = false;
+    if (s) s.textContent = message || 'Workspace ready · Tap to enter';
+    if (h) h.textContent = 'Your engineering workspace is ready';
+  }
+  function bpEnterApp() {
+    var splash = $('splash');
+    if (splash) splash.classList.add('hide');
+    try { if (typeof iappyx !== 'undefined' && iappyx && typeof iappyx.save === 'function') iappyx.save('beampro_intro_seen', '1'); } catch (e) {}
+  }
+  var enterBtn = $('enterBtn');
+  if (enterBtn) {
+    enterBtn.addEventListener('click', bpEnterApp);
+    setTimeout(function () { bpEnableIntro(bpBridgeReady ? 'Workspace ready · Tap to enter' : 'Offline mode available · Tap to enter'); }, 900);
+  }
+  var bpOriginalReady = window.onReady;
+  window.onReady = function () {
+    try { if (typeof bpOriginalReady === 'function') bpOriginalReady(); }
+    catch (e) { bpToast('App startup issue: ' + safeText(e.message || e)); }
+    bpBridgeReady = bpHasBridge();
+    try {
+      if (bpBridgeReady && typeof iappyx.load === 'function' && iappyx.load('beampro_intro_seen') === '1') {
+        var splash = $('splash'); if (splash) splash.classList.add('hide');
+      } else bpEnableIntro(bpBridgeReady ? 'Workspace ready · Tap to enter' : 'App ready · Native storage unavailable');
+    } catch (e2) { bpEnableIntro('App ready · Tap to enter'); }
+    if (!bpBridgeReady) bpToast('Native bridge not detected. Calculation remains available; save, GPS and downloads need iappyxOS.');
+  };
+  window._initBridge = function () {
+    var tries = 0;
+    function poll() {
+      if (bpHasBridge()) {
+        bpBridgeReady = true;
+        if (!window.__beamProOnReadyCalled) {
+          window.__beamProOnReadyCalled = true;
+          try { window.onReady(); } catch (e) { bpToast('Startup error: ' + safeText(e.message || e)); }
+        }
+        bpEnableIntro('Workspace ready · Tap to enter');
+        return;
+      }
+      tries++;
+      if (tries < 160) { setTimeout(poll, 75); return; }
+      bpBridgeExpired = true;
+      bpEnableIntro('Offline mode ready · Tap to enter');
+      var status = $('bpMapStatus'); if (status) status.textContent = 'iappyxOS bridge not detected — map downloads, GPS and persistent saving are unavailable in this runtime.';
     }
-    var n = b.length;
-    if (!n) return [];
-    var rowScale = new Array(n), colScale = new Array(n).fill(0), i, j;
-    var M = new Array(n), rhs = new Array(n);
+    poll();
+  };
+  window.addEventListener('load', function () { clearTimeout(bpBridgeTimer); bpBridgeTimer = setTimeout(window._initBridge, 120); });
+  setTimeout(function () { if (!bpBridgeReady) bpEnableIntro('Offline mode ready · Tap to enter'); }, 12000);
 
+  function bpCallback(fn, timeout) {
+    window._iappyxCb = window._iappyxCb || {};
+    var id = 'bpv2_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9), done = false;
+    var timer = setTimeout(function () {
+      if (done) return; done = true; delete window._iappyxCb[id];
+      try { fn({ ok: false, status: 0, error: 'Request timed out' }); } catch (e) {}
+    }, timeout || 18000);
+    window._iappyxCb[id] = function (result) {
+      if (done) return; done = true; clearTimeout(timer); delete window._iappyxCb[id];
+      try { fn(result || { ok: false, error: 'Empty bridge response' }); } catch (e) { bpToast('Callback error: ' + safeText(e.message || e)); }
+    };
+    return id;
+  }
+  function bpHttpJson(url, timeout, callback) {
+    if (!bpHasBridge()) { callback(new Error('iappyxOS HTTP bridge unavailable'), null); return; }
+    try {
+      iappyx.httpClient.request(JSON.stringify({ url: url, method: 'GET', headers: { Accept: 'application/json' }, timeout: timeout || 15000 }),
+        bpCallback(function (res) {
+          var status = Number(res && res.status || 0);
+          if (!res || res.ok === false || (status && status >= 400)) {
+            callback(new Error((res && res.error) || ('HTTP ' + (status || 'request failed'))), null); return;
+          }
+          var data;
+          try { data = JSON.parse(res.body || 'null'); }
+          catch (e) { callback(new Error('Invalid JSON response: ' + safeText(e.message || e)), null); return; }
+          if (!data || typeof data !== 'object') { callback(new Error('Response contained no usable data'), null); return; }
+          callback(null, data);
+        }, (timeout || 15000) + 2500));
+    } catch (e) { callback(new Error('HTTP bridge: ' + safeText(e.message || e)), null); }
+  }
+  function bpRequestImage(url, filename, callback) {
+    if (!bpHasBridge() || !iappyx.httpClient || typeof iappyx.httpClient.requestFile !== 'function' ||
+        !iappyx.storage || typeof iappyx.storage.readFileBase64 !== 'function') {
+      callback(new Error('Native image-file bridge unavailable'), null); return;
+    }
+    var done = false;
+    function finish(err, b64) { if (done) return; done = true; callback(err, b64); }
+    try {
+      iappyx.httpClient.requestFile(JSON.stringify({ url: url, method: 'GET', headers: { Accept: 'image/jpeg,image/png,image/*' }, timeout: 18000 }),
+        filename, bpCallback(function (res) {
+          var path = res && res.filePath ? res.filePath : filename, b64 = null, err = null;
+          try {
+            if (!res || res.ok === false || (res.status && Number(res.status) >= 400)) throw new Error((res && res.error) || ('HTTP ' + (res && res.status || 'request failed')));
+            b64 = iappyx.storage.readFileBase64(path);
+            if (!b64 || typeof b64 !== 'string') throw new Error('Downloaded image file is empty');
+            b64 = b64.replace(/^data:image\/[a-zA-Z0-9.+-]+;base64,/, '');
+          } catch (e) { err = e; }
+          try { if (path && typeof iappyx.storage.deleteFile === 'function') iappyx.storage.deleteFile(path); } catch (e2) {}
+          finish(err, b64);
+        }, 22000));
+    } catch (e) { finish(e, null); }
+  }
+
+  /* ---------- Numerical stability and input validation ---------- */
+  window.solve = function (A, b) {
+    if (!Array.isArray(A) || !Array.isArray(b) || A.length !== b.length) throw new Error('Solver input dimensions are invalid.');
+    var n = b.length; if (!n) return [];
+    var rowScale = new Array(n), colScale = new Array(n).fill(0), M = new Array(n), i, j;
     for (i = 0; i < n; i++) {
-      if (!Array.isArray(A[i]) || A[i].length !== n || !finite(b[i])) {
-        throw new Error('Solver matrix contains invalid values.');
-      }
+      if (!Array.isArray(A[i]) || A[i].length !== n || !finite(b[i])) throw new Error('Solver matrix contains invalid values.');
       var rs = 0;
-      for (j = 0; j < n; j++) {
-        if (!finite(A[i][j])) throw new Error('Solver matrix contains a non-finite value.');
-        rs = Math.max(rs, Math.abs(A[i][j]));
-      }
+      for (j = 0; j < n; j++) { if (!finite(A[i][j])) throw new Error('Solver matrix contains a non-finite value.'); rs = Math.max(rs, Math.abs(A[i][j])); }
       if (!(rs > 0)) throw new Error('Unstable or unconstrained structure. Check the support conditions.');
       rowScale[i] = rs;
       for (j = 0; j < n; j++) colScale[j] = Math.max(colScale[j], Math.abs(A[i][j] / rs));
     }
-    for (j = 0; j < n; j++) {
-      if (!(colScale[j] > 0) || !finite(colScale[j])) {
-        throw new Error('Unstable or unconstrained structure. Check the support conditions.');
-      }
-    }
+    for (j = 0; j < n; j++) if (!(colScale[j] > 0) || !finite(colScale[j])) throw new Error('Unstable or unconstrained structure. Check the support conditions.');
     for (i = 0; i < n; i++) {
       M[i] = new Array(n + 1);
       for (j = 0; j < n; j++) M[i][j] = (A[i][j] / rowScale[i]) / colScale[j];
       M[i][n] = b[i] / rowScale[i];
     }
-
-    var pivotTol = 1e-12;
     for (var k = 0; k < n; k++) {
       var pivot = k, best = Math.abs(M[k][k]);
-      for (i = k + 1; i < n; i++) {
-        var candidate = Math.abs(M[i][k]);
-        if (candidate > best) { best = candidate; pivot = i; }
-      }
-      if (!(best > pivotTol) || !finite(best)) {
-        throw new Error('Structure is unstable or numerically ill-conditioned. Check supports, span and section properties.');
-      }
+      for (i = k + 1; i < n; i++) if (Math.abs(M[i][k]) > best) { best = Math.abs(M[i][k]); pivot = i; }
+      if (!(best > 1e-12) || !finite(best)) throw new Error('Structure is unstable or numerically ill-conditioned. Check supports, span and section properties.');
       if (pivot !== k) { var tmp = M[k]; M[k] = M[pivot]; M[pivot] = tmp; }
       var diag = M[k][k];
-      for (i = k + 1; i < n; i++) {
-        var factor = M[i][k] / diag;
-        M[i][k] = 0;
-        if (factor) for (j = k + 1; j <= n; j++) M[i][j] -= factor * M[k][j];
-      }
+      for (i = k + 1; i < n; i++) { var factor = M[i][k] / diag; M[i][k] = 0; if (factor) for (j = k + 1; j <= n; j++) M[i][j] -= factor * M[k][j]; }
     }
     var z = new Array(n);
-    for (i = n - 1; i >= 0; i--) {
-      var sum = M[i][n];
-      for (j = i + 1; j < n; j++) sum -= M[i][j] * z[j];
-      z[i] = sum / M[i][i];
-      if (!finite(z[i])) throw new Error('Solver produced a non-finite displacement. Check model units and properties.');
-    }
-    var x = new Array(n);
-    for (j = 0; j < n; j++) x[j] = z[j] / colScale[j];
+    for (i = n - 1; i >= 0; i--) { var sum = M[i][n]; for (j = i + 1; j < n; j++) sum -= M[i][j] * z[j]; z[i] = sum / M[i][i]; if (!finite(z[i])) throw new Error('Solver produced a non-finite displacement.'); }
+    var x = new Array(n); for (j = 0; j < n; j++) x[j] = z[j] / colScale[j];
     return x;
   };
 
-  /* ---------- 2. Model validation before FEM analysis ---------- */
-  window.BeamProValidateModel = function (model) {
-    var s = model || window.S;
+  window.BeamProValidateModel = function (s) {
+    s = s || window.S;
     if (!s || typeof s !== 'object') throw new Error('Beam model is missing.');
-    var positive = [
-      ['Beam span', s.L, 1000], ['Elastic modulus', s.E, 1000],
-      ['Second moment of area', s.I, 1e9], ['Section depth', s.d, 10000],
-      ['Allowable bending stress', s.fy, 10000], ['Deflection ratio', s.lim, 10000]
-    ];
-    positive.forEach(function (p) {
-      if (!finite(p[1]) || p[1] <= 0 || p[1] > p[2]) {
-        throw new Error(p[0] + ' must be a finite positive value within the supported range.');
-      }
+    [['Beam span',s.L,1000],['Elastic modulus',s.E,1000],['Second moment of area',s.I,1e9],['Section depth',s.d,10000],['Allowable bending stress',s.fy,10000],['Deflection ratio',s.lim,10000]].forEach(function (p) {
+      if (!finite(p[1]) || p[1] <= 0 || p[1] > p[2]) throw new Error(p[0] + ' must be finite, positive and within the supported range.');
     });
-    ['fD', 'fL'].forEach(function (k) {
-      if (!finite(s[k]) || s[k] < 0 || s[k] > 100) throw new Error(k + ' load factor must be between 0 and 100.');
-    });
-    if (!Array.isArray(s.supports) || s.supports.length < 1 || s.supports.length > 20) {
-      throw new Error('Add between 1 and 20 valid supports.');
-    }
+    ['fD','fL'].forEach(function (k) { if (!finite(s[k]) || s[k] < 0 || s[k] > 100) throw new Error(k + ' load factor must be between 0 and 100.'); });
+    if (!Array.isArray(s.supports) || s.supports.length < 1 || s.supports.length > 20) throw new Error('Add between 1 and 20 supports.');
     var seen = [];
     s.supports.forEach(function (p) {
-      if (!p || !finite(p.x) || p.x < 0 || p.x > s.L || !['pinned', 'roller', 'fixed'].includes(p.type)) {
-        throw new Error('A support has an invalid position or type. Check the support list.');
-      }
-      if (seen.some(function (x) { return Math.abs(x - p.x) < 1e-8; })) {
-        throw new Error('Two supports occupy the same position. Remove the duplicate support.');
-      }
+      if (!p || !finite(p.x) || p.x < 0 || p.x > s.L || ['pinned','roller','fixed'].indexOf(p.type) < 0) throw new Error('A support has an invalid position or type.');
+      if (seen.some(function (x) { return Math.abs(x - p.x) < 1e-8; })) throw new Error('Two supports occupy the same position.');
       seen.push(p.x);
     });
-    if (!Array.isArray(s.loads) || s.loads.length > 30) throw new Error('A maximum of 30 load entries is supported per model.');
+    if (!Array.isArray(s.loads) || s.loads.length > 30) throw new Error('A maximum of 30 loads is supported.');
     s.loads.forEach(function (l) {
-      if (!l || !['point', 'udl', 'vdl', 'moment'].includes(l.type) || !['D', 'L'].includes(l.c)) {
-        throw new Error('A load has an invalid type or load case.');
-      }
-      var vals = Object.keys(l).filter(function (k) { return typeof l[k] === 'number'; });
-      vals.forEach(function (k) {
-        if (!finite(l[k]) || Math.abs(l[k]) > 1e9) throw new Error('A load contains an invalid or excessively large value.');
-      });
+      if (!l || ['point','udl','vdl','moment'].indexOf(l.type) < 0 || ['D','L'].indexOf(l.c) < 0) throw new Error('A load has an invalid type or case.');
+      Object.keys(l).forEach(function (k) { if (typeof l[k] === 'number' && (!finite(l[k]) || Math.abs(l[k]) > 1e9)) throw new Error('A load contains an invalid or excessive value.'); });
       if (l.type === 'point' || l.type === 'moment') {
-        if (!finite(l.x) || l.x < 0 || l.x > s.L) throw new Error('A point load or moment must be inside the beam span.');
-        if (!finite(l[l.type === 'point' ? 'P' : 'M'])) throw new Error('A load magnitude is missing.');
+        if (!finite(l.x) || l.x < 0 || l.x > s.L || !finite(l[l.type === 'point' ? 'P' : 'M'])) throw new Error('A point load or moment must have a valid position and magnitude.');
       } else {
-        if (!finite(l.x1) || !finite(l.x2) || l.x1 < 0 || l.x2 > s.L || l.x1 >= l.x2) {
-          throw new Error('A distributed load range must be inside the beam span and x1 must be less than x2.');
-        }
+        if (!finite(l.x1) || !finite(l.x2) || l.x1 < 0 || l.x2 > s.L || l.x1 >= l.x2) throw new Error('Distributed load range must lie inside the beam, with x1 < x2.');
         if (l.type === 'udl' && !finite(l.w)) throw new Error('Uniform load intensity is missing.');
         if (l.type === 'vdl' && (!finite(l.w1) || !finite(l.w2))) throw new Error('Varying load intensities are missing.');
       }
     });
     return true;
   };
-
-  /* ---------- 3. Improve deflection extrema without changing FEM solution ----------
-     Original FEM evaluator R.at(x) is retained. Sample each element densely,
-     then refine each local max/min with golden-section search. */
-  var bpOriginalAnalyze = window.analyze;
-  function bpRefineDeflection(R) {
-    if (!R || typeof R.at !== 'function' || !Array.isArray(R.nodes) || R.nodes.length < 2) return R;
+  var bpAnalyze = window.analyze;
+  function bpRefineDeflection(result) {
+    if (!result || typeof result.at !== 'function' || !Array.isArray(result.nodes) || result.nodes.length < 2) return result;
     var candidates = [], subdivisions = 32;
-    function value(x) { var q = R.at(x); return q && finite(q.D) ? q.D : 0; }
-    function golden(a, b, sign) {
-      var gr = 0.6180339887498949, c = b - gr * (b - a), d = a + gr * (b - a);
-      var fc = sign * value(c), fd = sign * value(d);
-      for (var it = 0; it < 42; it++) {
-        if (fc > fd) { b = d; d = c; fd = fc; c = b - gr * (b - a); fc = sign * value(c); }
-        else { a = c; c = d; fc = fd; d = a + gr * (b - a); fd = sign * value(d); }
-      }
-      return (a + b) / 2;
+    function value(x) { var q = result.at(x); return q && finite(q.D) ? q.D : 0; }
+    function golden(a,b,sign) {
+      var gr=.6180339887498949,c=b-gr*(b-a),d=a+gr*(b-a),fc=sign*value(c),fd=sign*value(d);
+      for (var it=0;it<42;it++) { if (fc>fd) { b=d;d=c;fd=fc;c=b-gr*(b-a);fc=sign*value(c); } else { a=c;c=d;fc=fd;d=a+gr*(b-a);fd=sign*value(d); } }
+      return (a+b)/2;
     }
-    for (var e = 0; e < R.nodes.length - 1; e++) {
-      var a = R.nodes[e], b = R.nodes[e + 1], le = b - a;
-      if (!(le > 1e-9)) continue;
-      var xx = [], yy = [];
-      for (var i = 0; i <= subdivisions; i++) {
-        var x = a + le * i / subdivisions;
-        xx.push(x); yy.push(value(x));
-      }
-      for (i = 1; i < subdivisions; i++) {
-        if (yy[i] >= yy[i - 1] && yy[i] >= yy[i + 1]) candidates.push(golden(xx[i - 1], xx[i + 1], 1));
-        if (yy[i] <= yy[i - 1] && yy[i] <= yy[i + 1]) candidates.push(golden(xx[i - 1], xx[i + 1], -1));
-      }
+    for (var e=0;e<result.nodes.length-1;e++) {
+      var a=result.nodes[e],b=result.nodes[e+1],le=b-a;if(!(le>1e-9))continue;
+      var xx=[],yy=[];for(var i=0;i<=subdivisions;i++){var x=a+le*i/subdivisions;xx.push(x);yy.push(value(x));}
+      for(i=1;i<subdivisions;i++){if(yy[i]>=yy[i-1]&&yy[i]>=yy[i+1])candidates.push(golden(xx[i-1],xx[i+1],1));if(yy[i]<=yy[i-1]&&yy[i]<=yy[i+1])candidates.push(golden(xx[i-1],xx[i+1],-1));}
     }
-    var additions = [];
-    candidates.forEach(function (x) {
-      if (!finite(x) || x < 0 || x > (R.nodes[R.nodes.length - 1])) return;
-      if ((R.xs || []).some(function (v) { return Math.abs(v - x) < 1e-7; })) return;
-      var q = R.at(x);
-      if (q && finite(q.V) && finite(q.M) && finite(q.D)) additions.push({ x: x, V: q.V, M: q.M, D: q.D });
-    });
-    if (!additions.length) return R;
-    var rows = [];
-    for (var j = 0; j < R.xs.length; j++) rows.push({ x: R.xs[j], V: R.V[j], M: R.M[j], D: R.D[j], order: j });
-    additions.forEach(function (q, k) { rows.push({ x: q.x, V: q.V, M: q.M, D: q.D, order: R.xs.length + k }); });
-    rows.sort(function (p, q) { return p.x - q.x || p.order - q.order; });
-    R.xs = rows.map(function (p) { return p.x; });
-    R.V = rows.map(function (p) { return p.V; });
-    R.M = rows.map(function (p) { return p.M; });
-    R.D = rows.map(function (p) { return p.D; });
-    var maxI = 0, minI = 0;
-    for (j = 1; j < R.D.length; j++) { if (R.D[j] > R.D[maxI]) maxI = j; if (R.D[j] < R.D[minI]) minI = j; }
-    R.eD = { max: R.D[maxI], xmax: R.xs[maxI], min: R.D[minI], xmin: R.xs[minI] };
-    return R;
+    var additions=[];candidates.forEach(function(x){if(!finite(x)||x<0||x>result.nodes[result.nodes.length-1]||(result.xs||[]).some(function(v){return Math.abs(v-x)<1e-7;}))return;var q=result.at(x);if(q&&finite(q.V)&&finite(q.M)&&finite(q.D))additions.push({x:x,V:q.V,M:q.M,D:q.D});});
+    if (!additions.length) return result;
+    var rows=[];for(var j=0;j<result.xs.length;j++)rows.push({x:result.xs[j],V:result.V[j],M:result.M[j],D:result.D[j],order:j});
+    additions.forEach(function(q,k){rows.push({x:q.x,V:q.V,M:q.M,D:q.D,order:result.xs.length+k});});
+    rows.sort(function(p,q){return p.x-q.x||p.order-q.order;});
+    result.xs=rows.map(function(p){return p.x;});result.V=rows.map(function(p){return p.V;});result.M=rows.map(function(p){return p.M;});result.D=rows.map(function(p){return p.D;});
+    var maxI=0,minI=0;for(j=1;j<result.D.length;j++){if(result.D[j]>result.D[maxI])maxI=j;if(result.D[j]<result.D[minI])minI=j;}
+    result.eD={max:result.D[maxI],xmax:result.xs[maxI],min:result.D[minI],xmin:result.xs[minI]};return result;
   }
-  if (typeof bpOriginalAnalyze === 'function') {
-    window.analyze = function () {
-      window.BeamProValidateModel(window.S);
-      var result = bpOriginalAnalyze.apply(this, arguments);
-      return bpRefineDeflection(result);
-    };
-  }
+  if (typeof bpAnalyze === 'function') window.analyze = function () { window.BeamProValidateModel(window.S); return bpRefineDeflection(bpAnalyze.apply(this, arguments)); };
 
-  /* ---------- 4. Harden add-load and add-support actions ---------- */
   window.addLoad = function () {
-    var t = $('loadType').value, c = $('loadCase').value, l = { type: t, c: c };
-    function number(id) {
-      var el = $(id), raw = el ? String(el.value).trim() : '';
-      if (!raw) throw new Error('Complete every load field before adding the load.');
-      var n = Number(raw);
-      if (!Number.isFinite(n)) throw new Error('Load fields must contain finite numbers.');
-      return n;
-    }
+    var type=$('loadType').value, c=$('loadCase').value, load={type:type,c:c};
+    function number(id){var el=$(id),raw=el?String(el.value).trim():'';if(!raw)throw new Error('Complete every load field.');var n=Number(raw);if(!finite(n))throw new Error('Load values must be finite numbers.');return n;}
     try {
-      if (t === 'point') { l.x = number('l_x'); l.P = number('l_P'); }
-      else if (t === 'moment') { l.x = number('l_x'); l.M = number('l_M'); }
-      else if (t === 'udl') { l.x1 = number('l_x1'); l.x2 = number('l_x2'); l.w = number('l_w'); }
-      else if (t === 'vdl') { l.x1 = number('l_x1'); l.x2 = number('l_x2'); l.w1 = number('l_w1'); l.w2 = number('l_w2'); }
+      if(type==='point'){load.x=number('l_x');load.P=number('l_P');}
+      else if(type==='moment'){load.x=number('l_x');load.M=number('l_M');}
+      else if(type==='udl'){load.x1=number('l_x1');load.x2=number('l_x2');load.w=number('l_w');}
+      else if(type==='vdl'){load.x1=number('l_x1');load.x2=number('l_x2');load.w1=number('l_w1');load.w2=number('l_w2');}
       else throw new Error('Unknown load type.');
-      var candidate = Object.assign({}, window.S, { loads: window.S.loads.concat([l]) });
-      window.BeamProValidateModel(candidate);
-      window.S.loads.push(l);
-      window.changed(); window.renderAll(); window.toast('Load added');
-    } catch (e) { bpToast(e.message || 'Load could not be added.'); }
+      window.BeamProValidateModel(Object.assign({},window.S,{loads:window.S.loads.concat([load])}));
+      window.S.loads.push(load);window.changed();window.renderAll();bpToast('Load added');
+    } catch(e){bpToast(e.message||'Load could not be added.');}
   };
-
   window.addSupport = function () {
-    var raw = $('supX').value.trim(), x = Number(raw), type = $('supType').value;
-    if (!raw || !Number.isFinite(x) || x < 0 || x > window.S.L) { bpToast('Support position must be between 0 and ' + window.S.L + ' m.'); return; }
-    if (!['pinned', 'roller', 'fixed'].includes(type)) { bpToast('Choose a valid support type.'); return; }
-    var supports = window.S.supports.filter(function (p) { return Math.abs(p.x - x) > 1e-8; });
-    if (supports.length >= 20) { bpToast('A maximum of 20 supports is supported.'); return; }
-    supports.push({ x: x, type: type });
-    window.S.supports = supports.sort(function (a, b) { return a.x - b.x; });
-    window.changed(); window.renderAll(); window.toast('Support added');
+    var raw=String($('supX').value||'').trim(),x=Number(raw),type=$('supType').value;
+    if(!raw||!finite(x)||x<0||x>window.S.L){bpToast('Support position must be between 0 and '+window.S.L+' m.');return;}
+    if(['pinned','roller','fixed'].indexOf(type)<0){bpToast('Choose a valid support type.');return;}
+    var supports=window.S.supports.filter(function(p){return Math.abs(p.x-x)>1e-8;});if(supports.length>=20){bpToast('Maximum 20 supports reached.');return;}
+    supports.push({x:x,type:type});window.S.supports=supports.sort(function(a,b){return a.x-b.x;});window.changed();window.renderAll();bpToast('Support added');
   };
+  document.addEventListener('change',function(ev){var el=ev.target;if(!el||!el.matches||!el.matches('[data-k]'))return;var k=el.dataset.k,raw=String(el.value||'').trim(),v=Number(raw),factor=k==='fD'||k==='fL';if(!raw||!finite(v)||(factor?(v<0||v>100):v<=0)){ev.stopImmediatePropagation();el.value=window.S[k];bpToast(factor?'Load factor must be 0–100.':'Enter a finite positive value.');}},true);
 
-  /* Capture invalid model-property changes before the original input listener. */
-  document.addEventListener('change', function (event) {
-    var el = event.target;
-    if (!el || !el.matches || !el.matches('[data-k]')) return;
-    var key = el.dataset.k, raw = String(el.value).trim(), v = Number(raw);
-    var factor = key === 'fD' || key === 'fL';
-    if (!raw || !Number.isFinite(v) || (factor ? v < 0 || v > 100 : v <= 0)) {
-      event.stopImmediatePropagation();
-      bpToast(factor ? 'Load factor must be between 0 and 100.' : 'Enter a finite positive value.');
-      el.value = window.S[key];
-    }
-  }, true);
-
-  /* ---------- 5. Live Esri World Imagery tile loading and reliable retry ---------- */
-  var TILE = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-  var MP = window.MP || (window.MP = { z: 3, lat: 20, lon: 0, tiles: {}, pend: {}, np: 0, ok: 0, fail: 0, key: '', drag: null, st: null });
-  MP.tiles = MP.tiles || {}; MP.pend = MP.pend || {}; MP.generation = MP.generation || 0; MP.lastError = '';
-  var bpOldMapDraw = window.drawMap;
-  function bpMapCallback(fn, timeout) {
-    window._iappyxCb = window._iappyxCb || {};
-    var id = 'bpmap_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8), done = false;
-    var timer = setTimeout(function () {
-      if (done) return; done = true; delete window._iappyxCb[id];
-      fn({ ok: false, error: 'Tile request timed out' });
-    }, timeout || 25000);
-    window._iappyxCb[id] = function (res) {
-      if (done) return; done = true; clearTimeout(timer); delete window._iappyxCb[id]; fn(res);
-    };
-    return id;
+  /* ---------- Satellite imagery with automatic per-session fallback ---------- */
+  var MP = window.MP || (window.MP = {z:3,lat:20,lon:0,tiles:{},pend:{},np:0,ok:0,fail:0,key:'',drag:null,st:null});
+  MP.tiles=MP.tiles||{};MP.pend=MP.pend||{};MP.generation=(MP.generation||0)+1;MP.lastError='';MP.preference='auto';MP.activeProvider='esri';MP.loadedEsri=0;MP.loadedNasa=0;MP.fallbackDate='';
+  function clearMapCache() { MP.generation++; MP.tiles={}; MP.pend={}; MP.np=0; MP.ok=0; MP.fail=0; MP.loadedEsri=0; MP.loadedNasa=0; }
+  function dateMinus(days) { var d=new Date(Date.now()-days*86400000);return d.toISOString().slice(0,10); }
+  function mapUrl(provider,z,x,y,older) {
+    if(provider==='esri') return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/'+z+'/'+y+'/'+x;
+    var day=dateMinus(older?16:8);
+    return 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/'+day+'/GoogleMapsCompatible_Level6/'+z+'/'+y+'/'+x+'.jpg';
   }
-  function bpMapTile(z, x, y) {
-    var key = z + '/' + x + '/' + y;
-    if (Object.prototype.hasOwnProperty.call(MP.tiles, key)) return MP.tiles[key] || null;
-    if (MP.pend[key] || MP.np >= 8) return null;
-    MP.pend[key] = true; MP.np++;
-    var generation = MP.generation;
-    var filename = 'beampro_esri_' + z + '_' + x + '_' + y + '_' + Date.now() + '.jpg';
-    try {
-      iappyx.httpClient.requestFile(
-        JSON.stringify({
-          url: TILE.replace('{z}', z).replace('{y}', y).replace('{x}', x),
-          method: 'GET', headers: { Accept: 'image/jpeg,image/*' }, timeout: 20000
-        }),
-        filename,
-        bpMapCallback(function (res) {
-          delete MP.pend[key]; MP.np = Math.max(0, MP.np - 1);
-          var filePath = res && res.filePath ? res.filePath : filename, base64 = null;
-          try {
-            if (res && res.ok && (!res.status || res.status < 400)) base64 = iappyx.storage.readFileBase64(filePath);
-            else MP.lastError = 'HTTP ' + (res && res.status ? res.status : 'request failed') + (res && res.error ? ' · ' + res.error : '');
-          } catch (e) { MP.lastError = 'Cannot read downloaded tile: ' + String(e && e.message || e); }
-          try { iappyx.storage.deleteFile(filePath); } catch (e2) {}
-          if (generation !== MP.generation) return;
-          if (!base64) { MP.tiles[key] = 0; MP.fail++; if (!MP.lastError) MP.lastError = 'Tile file was empty or unavailable'; window.drawMap(); return; }
-          var img = new Image();
-          img.onload = function () { if (generation !== MP.generation) return; MP.tiles[key] = img; MP.ok++; window.drawMap(); };
-          img.onerror = function () { if (generation !== MP.generation) return; MP.tiles[key] = 0; MP.fail++; MP.lastError = 'Esri tile data could not be decoded as an image'; window.drawMap(); };
-          img.src = 'data:image/jpeg;base64,' + base64;
-        }, 25000)
-      );
-    } catch (e) {
-      delete MP.pend[key]; MP.np = Math.max(0, MP.np - 1); MP.tiles[key] = 0; MP.fail++;
-      MP.lastError = 'iappyxOS file-download bridge: ' + String(e && e.message || e);
-    }
+  function chooseNasaFallback() {
+    if(MP.preference!=='auto'||MP.activeProvider==='nasa')return;
+    MP.activeProvider='nasa';clearMapCache();MP.activeProvider='nasa';
+    var status=$('bpMapStatus');if(status)status.textContent='Esri tiles failed. Switched to NASA MODIS backup imagery (lower resolution, max zoom 6).';
+    window.drawMap();
+  }
+  function tileLoad(provider,z,x,y,key,older) {
+    if (MP.preference==='auto' && MP.activeProvider==='nasa') provider='nasa';
+    var cacheKey=provider+'|'+z+'/'+x+'/'+y;
+    if(Object.prototype.hasOwnProperty.call(MP.tiles,cacheKey))return MP.tiles[cacheKey]||null;
+    if(MP.pend[cacheKey]||MP.np>=8)return null;
+    MP.pend[cacheKey]=true;MP.np++;
+    var generation=MP.generation,fn='beampro_'+provider+'_'+z+'_'+x+'_'+y+'_'+Date.now()+'.jpg';
+    bpRequestImage(mapUrl(provider,z,x,y,older),fn,function(err,b64){
+      delete MP.pend[cacheKey];MP.np=Math.max(0,MP.np-1);
+      if(generation!==MP.generation)return;
+      if(err||!b64){
+        if(provider==='esri'&&MP.preference==='auto'){MP.lastError='Esri tile unavailable: '+safeText(err&&err.message||'download failed');chooseNasaFallback();return;}
+        if(provider==='nasa'&&!older){tileLoad('nasa',z,x,y,key,true);return;}
+        MP.tiles[cacheKey]=0;MP.fail++;MP.lastError=(provider==='nasa'?'NASA GIBS':'Esri')+' tile failed: '+safeText(err&&err.message||'unavailable');window.drawMap();return;
+      }
+      var img=new Image();
+      img.onload=function(){if(generation!==MP.generation)return;MP.tiles[cacheKey]=img;MP.ok++;if(provider==='esri')MP.loadedEsri++;else MP.loadedNasa++;window.drawMap();};
+      img.onerror=function(){if(generation!==MP.generation)return;if(provider==='esri'&&MP.preference==='auto'){MP.lastError='Esri image could not be decoded';chooseNasaFallback();return;}if(provider==='nasa'&&!older){tileLoad('nasa',z,x,y,key,true);return;}MP.tiles[cacheKey]=0;MP.fail++;MP.lastError=provider+' image decode failed';window.drawMap();};
+      img.src='data:image/jpeg;base64,'+b64;
+    });
     return null;
   }
-  window.drawMap = function () {
-    var cv = $('siteMap'); if (!cv) return;
-    var width = cv.clientWidth; if (!width) return;
-    if (cv.width !== width) cv.width = width;
-    cv.height = 240;
-    var ctx = cv.getContext('2d'); if (!ctx) return;
-    var h = 240, z = MP.z, n = Math.pow(2, z);
-    ctx.fillStyle = '#0b1725'; ctx.fillRect(0, 0, width, h);
-    var x0 = (MP.lon + 180) / 360 * n * 256 - width / 2;
-    var lat = Math.max(-85.05112878, Math.min(85.05112878, MP.lat));
-    var sin = Math.sin(lat * Math.PI / 180);
-    var y0 = (0.5 - Math.log((1 + sin) / (1 - sin)) / (4 * Math.PI)) * n * 256 - h / 2;
-    var visible = 0, pending = 0;
-    for (var tx = Math.floor(x0 / 256); tx <= Math.floor((x0 + width) / 256); tx++) {
-      for (var ty = Math.floor(y0 / 256); ty <= Math.floor((y0 + h) / 256); ty++) {
-        if (ty < 0 || ty >= n) continue;
-        var xx = ((tx % n) + n) % n, key = z + '/' + xx + '/' + ty;
-        var img = bpMapTile(z, xx, ty);
-        if (img) { ctx.drawImage(img, Math.round(tx * 256 - x0), Math.round(ty * 256 - y0)); visible++; }
-        if (MP.pend[key]) pending++;
-      }
+  function mercX(lon,z){return (lon+180)/360*Math.pow(2,z)*256;}
+  function mercY(lat,z){lat=Math.max(-85.05112878,Math.min(85.05112878,lat));var s=Math.sin(lat*Math.PI/180);return (0.5-Math.log((1+s)/(1-s))/(4*Math.PI))*Math.pow(2,z)*256;}
+  function mapStatus(text){var e=$('bpMapStatus');if(e)e.textContent=text;}
+  window.drawMap=function(){
+    var cv=$('siteMap');if(!cv)return;var w=cv.clientWidth;if(!w)return;if(cv.width!==w)cv.width=w;cv.height=240;
+    var c=cv.getContext('2d');if(!c)return;var h=240,provider=MP.activeProvider||'esri',z=provider==='nasa'?Math.min(MP.z,6):MP.z,n=Math.pow(2,z);
+    c.fillStyle='#0b1725';c.fillRect(0,0,w,h);
+    var x0=mercX(MP.lon,z)-w/2,y0=mercY(MP.lat,z)-h/2,visible=0,pending=0;
+    var snap=window.S.site&&window.S.site.snap;
+    if(snap){try{if(!MP.snapImg||MP.snapSrc!==snap){MP.snapImg=new Image();MP.snapSrc=snap;MP.snapImg.onload=function(){window.drawMap();};MP.snapImg.src=snap;}if(MP.snapImg.complete&&MP.snapImg.naturalWidth)c.drawImage(MP.snapImg,0,0,w,h);}catch(e){}}
+    for(var tx=Math.floor(x0/256);tx<=Math.floor((x0+w)/256);tx++)for(var ty=Math.floor(y0/256);ty<=Math.floor((y0+h)/256);ty++){
+      if(ty<0||ty>=n)continue;var xx=((tx%n)+n)%n,key=z+'/'+xx+'/'+ty,img=tileLoad(provider,z,xx,ty,key,false);
+      if(img){c.drawImage(img,Math.round(tx*256-x0),Math.round(ty*256-y0));visible++;}
+      var ck=provider+'|'+key;if(MP.pend[ck])pending++;
     }
-    var site = window.S.site, pinned = !!(site && Number.isFinite(site.lat) && Number.isFinite(site.lon));
-    if (pinned) {
-      var px = (site.lon + 180) / 360 * n * 256 - x0;
-      var slat = Math.max(-85.05112878, Math.min(85.05112878, site.lat)), ss = Math.sin(slat * Math.PI / 180);
-      var py = (0.5 - Math.log((1 + ss) / (1 - ss)) / (4 * Math.PI)) * n * 256 - y0;
-      ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.fillStyle = '#ff6b6b';
-      ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.strokeStyle = '#ff6b6b'; ctx.beginPath();
-      ctx.moveTo(px - 16, py); ctx.lineTo(px - 10, py); ctx.moveTo(px + 10, py); ctx.lineTo(px + 16, py);
-      ctx.moveTo(px, py - 16); ctx.lineTo(px, py - 10); ctx.moveTo(px, py + 10); ctx.lineTo(px, py + 16); ctx.stroke();
+    var site=window.S.site,pinned=!!(site&&finite(site.lat)&&finite(site.lon));
+    if(pinned){var px=mercX(site.lon,z)-x0,py=mercY(site.lat,z)-y0;c.lineWidth=2;c.strokeStyle='#fff';c.fillStyle='#ff6b6b';c.beginPath();c.arc(px,py,8,0,Math.PI*2);c.fill();c.stroke();c.strokeStyle='#ff6b6b';c.beginPath();c.moveTo(px-16,py);c.lineTo(px-10,py);c.moveTo(px+10,py);c.lineTo(px+16,py);c.moveTo(px,py-16);c.lineTo(px,py-10);c.moveTo(px,py+10);c.lineTo(px,py+16);c.stroke();}
+    c.font='10px -apple-system,sans-serif';c.textAlign='left';c.fillStyle='rgba(0,0,0,.65)';c.fillRect(0,h-17,Math.min(w,280),17);c.fillStyle='#fff';c.fillText(provider==='nasa'?'NASA EOSDIS GIBS · MODIS (coarse imagery)':'Satellite imagery © Esri, Maxar, Earthstar',4,h-5);
+    if(!visible&&pending)mapStatus('Loading '+(provider==='nasa'?'NASA backup imagery':'Esri satellite imagery')+'…');
+    else if(visible&&provider==='nasa')mapStatus('NASA MODIS backup loaded. Lower detail than Esri; use for broad site context only.');
+    else if(visible)mapStatus('Esri World Imagery loaded.');
+    else if(MP.fail)mapStatus('Tiles unavailable: '+(MP.lastError||'provider error')+'. Tap Reload or select another provider.');
+    else mapStatus('Waiting for satellite tiles…');
+    clearTimeout(MP.st);MP.st=setTimeout(function(){if(pinned&&visible&&!MP.np){try{var shot=cv.toDataURL('image/jpeg',.55);if(shot.length<260000){window.S.site.snap=shot;window.persist();}}catch(e){}}},1100);
+  };
+  window.BeamProRetryMap=function(){clearMapCache();MP.activeProvider=MP.preference==='nasa'?'nasa':'esri';window.drawMap();setTimeout(window.drawMap,350);};
+  window.setPin=function(lat,lon,source,accuracy){
+    if(!finite(lat)||!finite(lon)||lat < -90||lat>90||lon < -180||lon>180){bpToast('Location returned invalid coordinates.');return;}
+    var old=window.S.site||{}, same=Math.abs((old.lat||999)-lat)<1e-6&&Math.abs((old.lon||999)-lon)<1e-6;
+    window.S.site={name:old.name||'',lat:lat,lon:lon,source:source||'Manual map pin',accuracy:finite(accuracy)?accuracy:null,data:same?(old.data||{}):{},dataMeta:same?(old.dataMeta||{}):{},snap:same?old.snap:null};
+    MP.lat=lat;MP.lon=lon;MP.z=Math.max(MP.z,16);MP.key=lat+','+lon;window.persist();window.siteSync();
+  };
+  var providerSelect=$('bpImageryProvider');
+  if(providerSelect){providerSelect.addEventListener('change',function(){MP.preference=this.value;MP.activeProvider=this.value==='nasa'?'nasa':'esri';clearMapCache();MP.activeProvider=this.value==='nasa'?'nasa':'esri';window.drawMap();});}
+  if($('sRl'))$('sRl').onclick=function(){window.BeamProRetryMap();bpToast('Refreshing satellite imagery…');};
+  if($('sGps'))$('sGps').onclick=function(){
+    if(!bpHasBridge()||!iappyx.location||typeof iappyx.location.getLocation!=='function'){bpToast('GPS needs the iappyxOS location bridge.');return;}
+    try{iappyx.location.getLocation(bpCallback(function(r){if(!r||r.ok===false){bpToast('GPS unavailable: '+safeText(r&&r.error||'permission or location error'));return;}var lat=Number(r.lat),lon=Number(r.lon),acc=Number(r.accuracy);if(!finite(lat)||!finite(lon)||lat < -90||lat>90||lon < -180||lon>180){bpToast('GPS returned invalid coordinates.');return;}window.setPin(lat,lon,'GPS',finite(acc)?acc:null);MP.z=17;window.drawMap();bpToast('GPS location set'+(finite(acc)?' · accuracy '+Math.round(acc)+' m':''));},12000));}catch(e){bpToast('GPS error: '+safeText(e.message||e));}
+  };
+  /* keep the original pointer pan/tap handlers; they call the improved setPin(). */
+
+  /* ---------- Site data: truthful per-provider results ---------- */
+  function inContiguousUS(lat,lon){return lat>=24&&lat<=50&&lon>=-126&&lon<=-66;}
+  function statusLabel(v){return v==='loading'?'Loading…':v==='ok'?'Available':v==='skipped'?'Not applicable':v==='unavailable'?'Unavailable':'Not fetched';}
+  window.siteItems=function(){var s=window.S.site||{},d=s.data||{},m=s.dataMeta||{};
+    return [
+      ['Coordinates (WGS84)',finite(s.lat)&&finite(s.lon)?s.lat.toFixed(5)+', '+s.lon.toFixed(5):'Not pinned',safeText(s.source||'Manual map pin')+(finite(s.accuracy)?' · ±'+Math.round(s.accuracy)+' m':'')],
+      ['Ground elevation',finite(d.elev)?d.elev.toFixed(1)+' m a.s.l.':(m.elev==='unavailable'?'Unavailable':'Not fetched'),'Open-Meteo Elevation API'],
+      ['Topsoil texture (0–5 cm)',d.soil&&d.soil.txt?d.soil.txt:(m.soil==='unavailable'?'Temporarily unavailable (SoilGrids REST API paused)':'Not fetched'),'ISRIC SoilGrids REST API · global 250 m model'],
+      ['Historical maximum wind gust',finite(d.wind)?d.wind.toFixed(1)+' m/s ('+(d.wind*3.6).toFixed(0)+' km/h)':(m.wind==='unavailable'?'Unavailable':'Not fetched'),'Open-Meteo archive · 2016–2025; not a design wind speed'],
+      ['US seismic parameters',d.seis?safeText(d.seis):(m.seis==='skipped'?'Not provided for this region':'Not fetched'),'USGS ASCE 7-16 service · supported US region only']
+    ];
+  };
+  window.siteSync=function(){
+    if(!$('siteCard'))return;var s=window.S.site,has=!!(s&&finite(s.lat)&&finite(s.lon));
+    $('sPill').textContent=has?'Pinned':'No pin';$('sName').value=(s&&s.name)||'';
+    if(!has){$('sRows').innerHTML='<div class="empty">Tap the map to place a manual pin or use My GPS.</div>';window.drawMap();return;}
+    var rows=window.siteItems();$('sRows').innerHTML=rows.map(function(r){return '<div class="rr"><span class="l">'+esc(r[0])+'</span><span class="v">'+esc(r[1])+'</span></div>';}).join('');
+    window.drawMap();
+  };
+  window.fetchSite=function(){
+    var s=window.S.site;if(!s||!finite(s.lat)||!finite(s.lon)){bpToast('Place a valid map pin first.');return;}
+    if(s._fetching){bpToast('Site data request is already running.');return;}
+    s._fetching=true;var site=s, token='s'+Date.now()+Math.random().toString(36).slice(2,6), la=s.lat.toFixed(5),lo=s.lon.toFixed(5);
+    s.data={};s.dataMeta={elev:'loading',wind:'loading',soil:'unavailable',seis:inContiguousUS(s.lat,s.lon)?'loading':'skipped'};
+    if(!$('sStatus'))return;$('sStatus').className='status';$('sStatus').textContent='Fetching site data: 2 live sources; checking results individually…';
+    if($('sFetch'))$('sFetch').disabled=true;window.siteSync();
+    var pending=inContiguousUS(s.lat,s.lon)?3:2,finished=false;
+    function doneOne(){pending--;if(pending>0)return;if(finished)return;finished=true;site._fetching=false;if($('sFetch'))$('sFetch').disabled=false;
+      if(window.S.site!==site)return;
+      var meta=site.dataMeta||{},good=['elev','wind','seis'].filter(function(k){return meta[k]==='ok';}).length;
+      var attempted=['elev','wind','seis'].filter(function(k){return meta[k]!=='skipped';}).length;
+      var failed=Object.keys(meta).filter(function(k){return meta[k]==='unavailable';});
+      $('sStatus').className='status '+(good?'pos':'neg');
+      $('sStatus').textContent=good+' of '+attempted+' requested live sources available.'+(failed.length?' Unavailable: '+failed.join(', ')+'.':'')+' SoilGrids: temporarily paused.';
+      window.persist();window.siteSync();
     }
-    ctx.font = '10px -apple-system,sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(0,0,0,.62)'; ctx.fillRect(0, h - 16, 230, 16);
-    ctx.fillStyle = '#fff'; ctx.fillText('Satellite imagery © Esri, Maxar, Earthstar', 4, h - 5);
-    if (!visible && pending) {
-      ctx.textAlign = 'center'; ctx.font = 'bold 12px -apple-system,sans-serif'; ctx.fillText('Loading live Esri satellite imagery…', width / 2, h / 2);
-    } else if (!visible && MP.fail) {
-      ctx.textAlign = 'center'; ctx.font = 'bold 11px -apple-system,sans-serif'; ctx.fillText('Satellite tiles unavailable · tap Reload', width / 2, h / 2);
+    function current(){return window.S.site===site;}
+    bpHttpJson('https://api.open-meteo.com/v1/elevation?latitude='+la+'&longitude='+lo,12000,function(err,j){if(current()){if(!err&&Array.isArray(j.elevation)&&finite(Number(j.elevation[0]))){site.data.elev=Number(j.elevation[0]);site.dataMeta.elev='ok';}else{site.dataMeta.elev='unavailable';site.data.elev=false;}}doneOne();});
+    bpHttpJson('https://archive-api.open-meteo.com/v1/archive?latitude='+la+'&longitude='+lo+'&start_date=2016-01-01&end_date=2025-12-31&daily=wind_gusts_10m_max&wind_speed_unit=ms&timezone=UTC',24000,function(err,j){if(current()){try{var a=j.daily.wind_gusts_10m_max.filter(function(v){return finite(Number(v));}).map(Number);if(!err&&a.length){site.data.wind=Math.max.apply(null,a);site.dataMeta.wind='ok';}else throw new Error('No wind observations');}catch(e){site.data.wind=false;site.dataMeta.wind='unavailable';}}doneOne();});
+    if(inContiguousUS(s.lat,s.lon)){
+      bpHttpJson('https://earthquake.usgs.gov/ws/building-codes/asce7-16/calculate?latitude='+la+'&longitude='+lo+'&riskCategory=II&siteClass=C&title=BeamPro',22000,function(err,j){if(current()){try{var x=j.response&&j.response.data;if(err||!x||!finite(Number(x.sds))||!finite(Number(x.sd1)))throw new Error('No supported seismic result');site.data.seis='SDS '+Number(x.sds).toFixed(3)+' g, SD1 '+Number(x.sd1).toFixed(3)+' g, SDC '+(x.sdc||'-')+' (Risk II, Site Class C assumed)';site.dataMeta.seis='ok';}catch(e){site.data.seis=false;site.dataMeta.seis='unavailable';}}doneOne();});
     }
-    clearTimeout(MP.st);
-    MP.st = setTimeout(function () {
-      if (pinned && visible && !MP.np) {
-        try { window.S.site.snap = cv.toDataURL('image/jpeg', 0.72); window.persist(); } catch (e) {}
-      }
-    }, 900);
+    site.data.soil=false;
   };
-  window.BeamProRetryMap = function () {
-    MP.generation++; MP.pend = {}; MP.np = 0; MP.fail = 0; MP.lastError = '';
-    Object.keys(MP.tiles).forEach(function (k) { if (!MP.tiles[k]) delete MP.tiles[k]; });
-    window.drawMap(); setTimeout(window.drawMap, 300);
-  };
-  window.setPin = function (lat, lon) {
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) { bpToast('GPS returned invalid coordinates.'); return; }
-    lat = Math.max(-85, Math.min(85, lat)); lon = ((lon + 540) % 360) - 180;
-    window.S.site = { name: (window.S.site && window.S.site.name) || '', lat: lat, lon: lon };
-    MP.lat = lat; MP.lon = lon; MP.z = Math.max(MP.z, 16); MP.key = lat + ',' + lon;
-    window.persist(); window.siteSync();
-  };
-  if ($('sRl')) $('sRl').onclick = function () { window.BeamProRetryMap(); bpToast('Refreshing live Esri satellite tiles…'); };
+  if($('sFetch'))$('sFetch').onclick=window.fetchSite;
 
-  /* ---------- 6. More reliable public site-data HTTP requests ---------- */
-  window.httpGet = function (url, callback, timeout) {
-    var finished = false;
-    function finish(value) { if (finished) return; finished = true; callback(value); }
-    try {
-      iappyx.httpClient.request(
-        JSON.stringify({ url: url, method: 'GET', headers: { Accept: 'application/json' }, timeout: timeout || 15000 }),
-        bpMapCallback(function (res) {
-          var data = null;
-          try { if (res && res.ok && (!res.status || res.status < 400)) data = JSON.parse(res.body || 'null'); }
-          catch (e) { MP.lastError = 'Service returned invalid JSON: ' + String(e && e.message || e); }
-          finish(data);
-        }, (timeout || 15000) + 3000)
-      );
-    } catch (e) { MP.lastError = 'HTTP bridge: ' + String(e && e.message || e); finish(null); }
-  };
-
-  /* ---------- 7. Safer design-check calculations ---------- */
-  var bpOriginalChecks = window.checks;
-  if (typeof bpOriginalChecks === 'function') {
-    window.checks = function () {
-      if (!window.R) throw new Error('Run the analysis before viewing design checks.');
-      if (!Number.isFinite(window.S.fy) || window.S.fy <= 0 || !Number.isFinite(window.S.lim) || window.S.lim <= 0) {
-        throw new Error('Allowable stress and deflection ratio must be positive finite values.');
-      }
-      var k = bpOriginalChecks.apply(this, arguments);
-      if (!k || ![k.sig, k.ut, k.dm, k.dl, k.ud].every(Number.isFinite)) {
-        throw new Error('Design-check calculation produced an invalid value. Review the model units and inputs.');
-      }
-      return k;
-    };
-  }
-
-  /* ---------- 8. Professional mobile finish ---------- */
-  var style = document.createElement('style');
-  style.id = 'beampro-upgrade-style';
-  style.textContent = `
-    html{scroll-padding-top:94px}
-    body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.005em}
-    header{padding-top:max(12px,env(safe-area-inset-top));background:rgba(5,15,27,.96)}
+  /* ---------- Visual polish, safe error handling, and developer checks ---------- */
+  var style=document.createElement('style');style.id='beampro-v2-style';style.textContent=`
     .app{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
     .card{border-color:rgba(133,190,214,.2);box-shadow:0 14px 34px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.04)}
-    .ct{letter-spacing:.25px}
     input[type=number],input[type=text],select{min-height:49px;border-radius:12px}
-    .btn,.chip,.tab{transition:transform .16s ease,filter .2s ease,border-color .2s ease}
-    .btn:active,.chip:active,.tab:active{transform:scale(.985)}
+    .status{min-height:22px;line-height:1.5;overflow-wrap:anywhere}
+    button:disabled{opacity:.55;cursor:wait}
     #siteMap{touch-action:none;background:#091827}
-    .status{min-height:20px;line-height:1.5}
-    button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #70d9e9;outline-offset:2px}
+    .bp-diagnostics{font:12px/1.55 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:#dceaf1;background:#081522;border-radius:10px;padding:12px;margin-top:10px;max-height:260px;overflow:auto}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-  `;
-  document.head.appendChild(style);
-
-  /* ---------- 9. Diagnostics helper for on-device verification ---------- */
-  window.BeamProDiagnostics = {
-    map: function () {
-      return {
-        provider: 'Esri World Imagery', zoom: MP.z, center: { lat: MP.lat, lon: MP.lon },
-        loadedTiles: MP.ok, failedTiles: MP.fail, pendingTiles: MP.np,
-        lastError: MP.lastError || null,
-        bridgeAvailable: typeof iappyx !== 'undefined' && !!(iappyx.httpClient && iappyx.httpClient.requestFile && iappyx.storage && iappyx.storage.readFileBase64)
-      };
-    },
-    validate: function () {
-      try { window.BeamProValidateModel(window.S); return { ok: true, message: 'Model inputs valid.' }; }
-      catch (e) { return { ok: false, message: e.message }; }
-    },
-    benchmark: function () {
-      var savedS = window.S, savedR = window.R, results = [];
-      var base = { L: 6, E: 200, I: 8000, d: 300, fy: 165, lim: 360, fD: 1, fL: 1 };
-      var cases = [
-        { name: 'Simply supported · central 10 kN point load', supports: [{ x: 0, type: 'pinned' }, { x: 6, type: 'roller' }], loads: [{ type: 'point', c: 'D', x: 3, P: 10 }], expected: { leftReaction: 5, rightReaction: 5, maxMoment: 15, minDeflection: -2.8125 } },
-        { name: 'Simply supported · 5 kN/m full-span UDL', supports: [{ x: 0, type: 'pinned' }, { x: 6, type: 'roller' }], loads: [{ type: 'udl', c: 'D', x1: 0, x2: 6, w: 5 }], expected: { leftReaction: 15, rightReaction: 15, maxMoment: 22.5, minDeflection: -5.2734375 } },
-        { name: 'Cantilever · 10 kN end point load', supports: [{ x: 0, type: 'fixed' }], loads: [{ type: 'point', c: 'D', x: 6, P: 10 }], expected: { leftReaction: 10, fixedMoment: 60, minDeflection: -45 } }
+  `;document.head.appendChild(style);
+  var about=$('tab-about');
+  if(about&&!$('bpDiagnosticsCard')){
+    var card=document.createElement('div');card.className='card';card.id='bpDiagnosticsCard';
+    card.innerHTML='<div class="ct">System diagnostics</div><p class="hint">Check the FEM benchmark cases and native map bridge state. Network checks run only when you fetch site data or reload imagery.</p><button class="btn p" type="button" id="bpRunDiagnostics">Run self-tests</button><div id="bpDiagnosticsOutput" class="bp-diagnostics">Not run yet.</div>';
+    about.appendChild(card);
+  }
+  window.BeamProDiagnostics={
+    bridge:function(){return{available:bpHasBridge(),expired:bpBridgeExpired,http:!!(bpHasBridge()&&iappyx.httpClient),imageFiles:!!(bpHasBridge()&&iappyx.httpClient&&iappyx.httpClient.requestFile&&iappyx.storage&&iappyx.storage.readFileBase64),gps:!!(bpHasBridge()&&iappyx.location&&iappyx.location.getLocation)};},
+    map:function(){return{provider:MP.activeProvider,preference:MP.preference,zoom:MP.z,loadedEsri:MP.loadedEsri,loadedNasa:MP.loadedNasa,failed:MP.fail,pending:MP.np,lastError:MP.lastError||null};},
+    validate:function(){try{window.BeamProValidateModel(window.S);return{ok:true,message:'Model inputs valid.'};}catch(e){return{ok:false,message:e.message||String(e)};}},
+    benchmark:function(){
+      var savedS=window.S,savedR=window.R,out=[],base={L:6,E:200,I:8000,d:300,fy:165,lim:360,fD:1,fL:1};
+      var tests=[
+        {name:'Simply supported · 10 kN midspan point load',supports:[{x:0,type:'pinned'},{x:6,type:'roller'}],loads:[{type:'point',c:'D',x:3,P:10}],expect:[5,5,15,-2.8125]},
+        {name:'Simply supported · 5 kN/m full UDL',supports:[{x:0,type:'pinned'},{x:6,type:'roller'}],loads:[{type:'udl',c:'D',x1:0,x2:6,w:5}],expect:[15,15,22.5,-5.2734375]},
+        {name:'Cantilever · 10 kN end point load',supports:[{x:0,type:'fixed'}],loads:[{type:'point',c:'D',x:6,P:10}],expect:[10,60,-45]}
       ];
-      function close(actual, expected) { return Number.isFinite(actual) && Math.abs(actual - expected) <= Math.max(1e-3, Math.abs(expected) * 0.002); }
-      try {
-        cases.forEach(function (test) {
-          window.S = Object.assign({}, base, { supports: test.supports, loads: test.loads, site: null });
-          var result = window.analyze(), checks = {
-            equilibrium: result.ok,
-            leftReaction: close(result.reac[0].Ry, test.expected.leftReaction),
-            deflection: close(result.eD.min, test.expected.minDeflection)
-          };
-          if (test.expected.rightReaction != null) checks.rightReaction = close(result.reac[1].Ry, test.expected.rightReaction);
-          if (test.expected.maxMoment != null) checks.maxMoment = close(result.eM.max, test.expected.maxMoment);
-          if (test.expected.fixedMoment != null) checks.fixedMoment = close(result.reac[0].Mz, test.expected.fixedMoment);
-          results.push({ name: test.name, passed: Object.keys(checks).every(function (k) { return checks[k]; }), checks: checks,
-            actual: { reactions: result.reac.map(function (r) { return { Ry: r.Ry, Mz: r.Mz }; }), maxMoment: result.eM.max, minDeflection: result.eD.min } });
-        });
-      } catch (e) { results.push({ name: 'Benchmark execution', passed: false, error: e.message || String(e) }); }
-      finally { window.S = savedS; window.R = savedR; try { if (typeof window.renderAll === 'function') window.renderAll(); } catch (e2) {} }
-      return { passed: results.every(function (r) { return r.passed; }), tests: results };
+      function near(a,b){return finite(a)&&Math.abs(a-b)<=Math.max(1e-3,Math.abs(b)*.003);}
+      try{tests.forEach(function(t){window.S=Object.assign({},base,{supports:t.supports,loads:t.loads,site:null});var r=window.analyze(),pass=r.ok&&near(r.reac[0].Ry,t.expect[0])&&near(r.eD.min,t.expect[t.expect.length-1]);if(t.expect.length===4)pass=pass&&near(r.reac[1].Ry,t.expect[1])&&near(r.eM.max,t.expect[2]);else pass=pass&&near(r.reac[0].Mz,t.expect[1]);out.push({name:t.name,passed:pass,actual:{reactions:r.reac.map(function(q){return{Ry:q.Ry,Mz:q.Mz};}),maxMoment:r.eM.max,minDeflection:r.eD.min},expected:t.expect});});}
+      catch(e){out.push({name:'Execution',passed:false,error:e.message||String(e)});}
+      finally{window.S=savedS;window.R=savedR;try{window.renderAll();}catch(e){}}
+      return{passed:out.every(function(t){return t.passed;}),tests:out};
     }
   };
-
-  /* Redraw the map once the add-on has replaced its tile loader. */
-  setTimeout(function () { try { window.drawMap(); } catch (e) {} }, 250);
+  var run=$('bpRunDiagnostics');if(run)run.addEventListener('click',function(){var result={bridge:window.BeamProDiagnostics.bridge(),map:window.BeamProDiagnostics.map(),model:window.BeamProDiagnostics.validate(),fem:window.BeamProDiagnostics.benchmark()};$('bpDiagnosticsOutput').textContent=JSON.stringify(result,null,2);});
+  /* Keep the map source selector aligned after startup / project load. */
+  try{var select=$('bpImageryProvider');if(select)select.value=MP.preference;}catch(e){}
+  setTimeout(function(){try{window.drawMap();}catch(e){bpToast('Map startup error: '+safeText(e.message||e));}},300);
+  window.addEventListener('error',function(e){var msg=e&&e.message?e.message:'Unexpected app error';if($('bpMapStatus')&&/tile|map|image/i.test(msg))$('bpMapStatus').textContent='Map error: '+msg;});
 })();
-
 </script>
+
 </body></html>

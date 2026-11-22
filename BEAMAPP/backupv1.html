@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>BeamPro | Structural Beam Analysis</title>
+<style>
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box;}
+*:focus{outline:none;}
+button{-webkit-appearance:none;background:none;border:none;color:inherit;font:inherit;cursor:pointer;}
+input,textarea,select{-webkit-appearance:none;font:inherit;}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;background:#0d0d1a;color:#eaeaea;font-family:-apple-system,sans-serif;margin:0;min-height:100vh;}
+input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;}
+header{position:sticky;top:0;z-index:5;background:#0d0d1a;padding:12px 16px 8px;border-bottom:1px solid #0f3460;}
+.hin{max-width:600px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.logo{width:38px;height:38px;border-radius:12px;background:#0f3460;display:flex;align-items:center;justify-content:center;}
+h1{font-size:19px;margin:0;color:#eaeaea;font-weight:700;}
+h1 b{color:#4FC3F7;}
+.sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+.tabs{display:flex;gap:6px;}
+.tab{flex:1;min-height:44px;border-radius:50px;background:#1a1a2e;color:rgba(255,255,255,.5);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+.tab.active{background:#0f3460;color:#4FC3F7;}
+.app{max-width:600px;margin:0 auto;padding:12px 16px 60px;}
+.card{background:#1a1a2e;border-radius:12px;padding:16px;margin-bottom:12px;}
+.ct{font-size:14px;font-weight:700;color:#4FC3F7;margin-bottom:10px;}
+label{display:block;font-size:12px;color:rgba(255,255,255,.5);margin:10px 0 4px;}
+input[type=number],input[type=text],select{width:100%;min-height:44px;padding:10px 12px;background:#0d0d1a;border:1px solid #0f3460;border-radius:12px;color:#eaeaea;font-size:15px;}
+input:focus,select:focus{border-color:#4FC3F7;}
+input[type=range]{width:100%;padding:0;height:32px;background:none;border:none;accent-color:#4FC3F7;-webkit-appearance:auto;}
+.btn{display:block;width:100%;min-height:46px;padding:12px;background:#0f3460;color:#4FC3F7;border-radius:12px;font-size:15px;font-weight:700;margin-top:10px;text-align:center;}
+.btn.p{background:#4FC3F7;color:#0d0d1a;}
+.btn.d{background:#3a1a1a;color:#FF6B6B;}
+.row{display:flex;gap:8px;}.row>*{flex:1;min-width:0;}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.chip{min-height:44px;padding:0 14px;border-radius:50px;background:#0f3460;color:#4FC3F7;font-size:13px;font-weight:600;}
+.item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#0d0d1a;border-radius:12px;margin-top:8px;font-size:13px;}
+.item .info{flex:1;word-break:break-word;line-height:1.4;}
+.x{width:44px;height:44px;border-radius:50%;background:#3a1a1a;color:#FF6B6B;font-size:20px;font-weight:700;flex-shrink:0;}
+.mini{min-height:44px;padding:0 16px;border-radius:50px;background:#0f3460;color:#4FC3F7;font-size:13px;font-weight:700;flex-shrink:0;}
+.rr{display:flex;justify-content:space-between;gap:8px;padding:9px 0;font-size:14px;border-bottom:1px solid #0f3460;}
+.rr:last-child{border-bottom:none;}
+.rr .l{color:rgba(255,255,255,.5);}
+.rr .v{font-weight:700;font-family:monospace;text-align:right;}
+.pos{color:#69F0AE;}.neg{color:#FF6B6B;}.hl{color:#4FC3F7;}
+canvas{display:block;width:100%;border-radius:12px;background:#0d0d1a;}
+.empty{text-align:center;color:rgba(255,255,255,.5);padding:14px;font-size:13px;}
+.hint{font-size:11px;color:rgba(255,255,255,.45);margin-top:8px;line-height:1.5;}
+.hidden{display:none!important;}
+.pill{display:inline-block;padding:2px 10px;border-radius:50px;background:#0f3460;color:#4FC3F7;font-size:11px;font-weight:700;margin-left:6px;}
+.status{text-align:center;font-size:13px;margin-top:10px;min-height:18px;}
+.bar{height:10px;border-radius:50px;background:#0d0d1a;overflow:hidden;margin-top:6px;}
+.bar i{display:block;height:100%;border-radius:50px;}
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;font-family:monospace;}
+th,td{padding:8px 6px;text-align:right;border-bottom:1px solid #0f3460;white-space:nowrap;}
+th{color:#4FC3F7;font-weight:700;}
+@media print{@page{size:A4 portrait;margin:12mm}header,.nobr,.btn,.chips,input[type=range]{display:none!important;}body{background:#fff!important;color:#111!important;font-size:10pt}.app{max-width:none;padding:0}.card{background:#fff!important;color:#111!important;border:1px solid #cbd3df;break-inside:avoid;box-shadow:none}.ct,.hl,th{color:#0b3d91!important}.rr .l,.hint{color:#4b5563!important}.rr .v{color:#111!important}canvas{filter:none!important;max-width:100%}table{color:#111!important}td{color:#111!important}}
+
+/* BeamPro 2026 visual refresh and offline welcome experience */
+:root{--bp-ink:#0b1725;--bp-panel:#142438;--bp-panel2:#1a3047;--bp-cyan:#67d5e5;--bp-green:#71d5a4;--bp-text:#edf5f7;--bp-muted:#a6b8c6}
+body{background:radial-gradient(ellipse at 80% -10%,#173b55 0%,#0b1725 48%,#08121e 100%);color:var(--bp-text)}
+header{background:rgba(9,22,35,.96);border-bottom:1px solid rgba(103,213,229,.22);backdrop-filter:blur(12px)}
+.card{background:linear-gradient(145deg,#172a40,#122236);border:1px solid rgba(145,185,204,.12);box-shadow:0 9px 28px rgba(0,0,0,.12)}
+.ct{color:var(--bp-cyan)}
+.tab.active{background:linear-gradient(135deg,#174e70,#126b78);color:#e5fbff}
+.btn.p{background:linear-gradient(135deg,#69d8e7,#65c9b2);color:#082033}
+.btn{background:#1b4562;color:#c6f4f2}
+.welcome-hero{position:relative;overflow:hidden;border:1px solid rgba(122,210,190,.24);border-radius:22px;padding:22px 20px 16px;margin:4px 0 15px;background:linear-gradient(120deg,#102b40 0%,#163c4a 56%,#154638 100%);box-shadow:0 14px 34px rgba(0,0,0,.2)}
+.welcome-copy{position:relative;z-index:1;max-width:390px}.welcome-kicker{font-size:9px;letter-spacing:1.35px;font-weight:800;color:#9bdcc8}.tree-dot{font-size:17px;vertical-align:-2px;margin-right:5px}.welcome-hero h2{font-size:25px;line-height:1.13;letter-spacing:-.7px;margin:13px 0 9px;color:#f3fbfa}.welcome-hero h2 span{color:#8ce0c0}.welcome-hero p{font-size:12px;line-height:1.6;color:#c3d7d9;max-width:340px;margin:0}.welcome-actions{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-top:16px}.welcome-start{background:#8ce0c0;color:#0b2a2d;border-radius:11px;padding:11px 15px;font-size:12px;font-weight:800}.welcome-start span{font-size:17px;margin-left:7px}.offline-tag{font-size:10px;color:#c5e5da}.offline-tag span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#8ce0a9;margin-right:5px}.eco-art{position:absolute;right:12px;top:10px;width:47%;max-width:320px;opacity:.98;pointer-events:none}.eco-art svg{width:100%;height:auto;display:block}.eco-note{display:flex;gap:10px;align-items:center;margin-top:14px;padding:10px 12px;border-radius:13px;background:rgba(5,18,27,.3);border:1px solid rgba(142,220,185,.2);position:relative;z-index:1}.eco-tree{font-size:23px}.eco-note b{display:block;color:#b7f0d1;font-size:11px}.eco-note small{display:block;color:#b2c9c9;font-size:9px;line-height:1.4;margin-top:3px}.welcome-close{position:absolute;right:10px;top:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.1);color:#d7eeee;font-size:21px;z-index:2}
+@media(max-width:440px){.welcome-hero{padding:18px 15px 14px}.welcome-copy{max-width:100%;padding-right:0}.welcome-hero h2{font-size:23px;max-width:250px}.welcome-hero p{max-width:250px}.eco-art{width:38%;right:-8px;top:56px;opacity:.34}.welcome-hero h2{max-width:220px}.welcome-hero p{max-width:220px}.welcome-kicker{font-size:8px;letter-spacing:.9px}}
+</style></head><body>
+<header><div class="hin">
+<div class="brand"><div class="logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18"/><path d="M5 9v0l-2 6h4z"/><path d="M19 9l-2 6h4z"/></svg></div>
+<div><h1>Beam<b>Pro</b><span class="pill">FEM</span></h1><div class="sub">SFD, BMD, deflection and design checks</div></div></div>
+<div class="tabs"><button class="tab active" data-tab="setup">Model</button><button class="tab" data-tab="loads">Loads</button><button class="tab" data-tab="results">Results</button><button class="tab" data-tab="projects">Projects</button><button class="tab" data-tab="about">About</button></div>
+</div></header>
+
+<main class="app">
+<section class="welcome-hero" id="welcomeHero">
+  <div class="welcome-copy">
+    <div class="welcome-kicker"><span class="tree-dot">♧</span> ENGINEERING • RESPONSIBILITY • INNOVATION</div>
+    <h2>Build smarter.<br><span>Design responsibly.</span></h2>
+    <p>BeamPro helps you explore beam behaviour, understand structural response and create clear digital engineering reports.</p>
+    <div class="welcome-actions"><button class="welcome-start" onclick="dismissIntro()">Start analysing <span>→</span></button><span class="offline-tag"><span></span> Works offline</span></div>
+  </div>
+  <div class="eco-art" aria-label="Offline illustration of a structural beam and green trees">
+    <svg viewBox="0 0 320 210" role="img" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="ecoSky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173f66"/><stop offset="1" stop-color="#10283e"/></linearGradient><linearGradient id="ecoLeaf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#74d6a4"/><stop offset="1" stop-color="#23966e"/></linearGradient></defs>
+      <rect x="5" y="5" width="310" height="200" rx="22" fill="url(#ecoSky)"/>
+      <circle cx="255" cy="45" r="20" fill="#f2c879" opacity=".95"/><path d="M22 157H298" stroke="#7194a8" stroke-width="2" opacity=".65"/>
+      <path d="M54 103H265" stroke="#d8e9f1" stroke-width="9" stroke-linecap="round"/><path d="M68 108L52 143H84Z M250 108L234 143H266Z" fill="#6eb5c8"/><path d="M46 145H91 M228 145H273" stroke="#9bc6ce" stroke-width="3"/>
+      <path d="M91 103V79 M160 103V79 M229 103V79" stroke="#8ac7d2" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M160 34V70" stroke="#f2c879" stroke-width="2"/><path d="M153 61L160 70L167 61" fill="none" stroke="#f2c879" stroke-width="2"/>
+      <g transform="translate(30 0)"><path d="M25 154V117" stroke="#a7c99b" stroke-width="7" stroke-linecap="round"/><circle cx="25" cy="99" r="22" fill="url(#ecoLeaf)"/><circle cx="10" cy="113" r="15" fill="#38aa7b"/><circle cx="41" cy="114" r="15" fill="#53bd89"/></g>
+      <g transform="translate(240 0)"><path d="M25 154V117" stroke="#a7c99b" stroke-width="7" stroke-linecap="round"/><circle cx="25" cy="99" r="22" fill="url(#ecoLeaf)"/><circle cx="10" cy="113" r="15" fill="#38aa7b"/><circle cx="41" cy="114" r="15" fill="#53bd89"/></g>
+      <path d="M111 177H209" stroke="#78c7a2" stroke-width="2" stroke-linecap="round"/><text x="160" y="191" fill="#c5e7d8" text-anchor="middle" font-size="9" font-family="Arial" letter-spacing="1.5">DIGITAL FIRST • PAPER LESS</text>
+    </svg>
+  </div>
+  <div class="eco-note"><span class="eco-tree">🌳</span><div><b>Save paper. Keep trees growing.</b><small>Review, store and share reports digitally. Print only when a physical copy is genuinely needed.</small></div></div>
+  <button class="welcome-close" onclick="dismissIntro()" aria-label="Dismiss introduction">×</button>
+</section>
+<div class="card" id="modelCard"><div class="ct">Beam preview</div><canvas id="modelCv"></canvas></div>
+
+<section id="tab-setup">
+<div class="card"><div class="ct">Beam and section</div>
+<label>Length L (m)</label><input type="number" data-k="L" step="0.1" min="0.1">
+<div class="row"><div><label>E (GPa)</label><input type="number" data-k="E" step="1" min="0.1"></div><div><label>I (cm⁴)</label><input type="number" data-k="I" step="100" min="1"></div></div>
+<div class="chips"><button class="chip" onclick="setE(200)">Steel</button><button class="chip" onclick="setE(30)">Concrete</button><button class="chip" onclick="setE(11)">Timber</button><button class="chip" onclick="setE(70)">Aluminium</button></div>
+<div class="rr" style="margin-top:10px"><span class="l">EI = E × I</span><span class="v hl" id="eiOut"></span></div>
+<div class="row"><div><label>Section depth d (mm)</label><input type="number" data-k="d" step="10" min="1"></div><div><label>Allowable stress (MPa)</label><input type="number" data-k="fy" step="5" min="1"></div></div>
+<label>Deflection limit L / ...</label><input type="number" data-k="lim" step="10" min="1">
+<div class="hint">EI is calculated for you: E in GPa and I in cm⁴ give EI in kN·m². Example: steel 200 GPa with I = 8000 cm⁴ gives 16000 kN·m².</div></div>
+
+<div class="card"><div class="ct">Supports <span class="pill" id="supCount">0</span></div>
+<div class="chips" style="margin-top:0"><button class="chip" onclick="preset('simply')">Simply supported</button><button class="chip" onclick="preset('cant')">Cantilever</button><button class="chip" onclick="preset('fixed')">Fixed-fixed</button><button class="chip" onclick="preset('propped')">Propped</button></div>
+<div class="row"><div><label>Type</label><select id="supType"><option value="pinned">Pinned</option><option value="roller">Roller</option><option value="fixed">Fixed</option></select></div><div><label>Position x (m)</label><input type="number" id="supX" step="0.1" value="0"></div></div>
+<button class="btn p" onclick="addSupport()">Add support</button>
+<div id="supList"></div></div>
+</section>
+
+<section id="tab-loads" class="hidden">
+<div class="card"><div class="ct">Add load</div>
+<div class="row"><div><label>Type</label><select id="loadType"><option value="point">Point load (kN)</option><option value="udl">Uniform (kN/m)</option><option value="vdl">Varying (kN/m)</option><option value="moment">Moment (kN·m)</option></select></div>
+<div><label>Load case</label><select id="loadCase"><option value="D">Dead (D)</option><option value="L">Live (L)</option></select></div></div>
+<div id="loadFields"></div>
+<div class="hint">Downward is positive, use a negative value for upward. Applied moments are positive clockwise.</div>
+<button class="btn p" onclick="addLoad()">Add load</button></div>
+
+<div class="card"><div class="ct">Load combination</div>
+<div class="row"><div><label>Factor on dead (D)</label><input type="number" data-k="fD" step="0.1" min="0"></div><div><label>Factor on live (L)</label><input type="number" data-k="fL" step="0.1" min="0"></div></div>
+<div class="chips"><button class="chip" onclick="setF(1,1)">Service 1.0D+1.0L</button><button class="chip" onclick="setF(1.2,1.6)">1.2D+1.6L</button><button class="chip" onclick="setF(1.5,1.5)">1.5D+1.5L</button></div></div>
+
+<div class="card"><div class="ct">Applied loads <span class="pill" id="loadCount">0</span></div><div id="loadList"></div></div>
+</section>
+
+<section id="tab-results" class="hidden">
+<div class="card nobr"><button class="btn p" style="margin-top:0" onclick="runAnalysis()">Analyze beam</button><div class="status" id="status"></div></div>
+<div id="resContent" class="hidden">
+<div class="card"><div class="ct">Check at any point</div>
+<input type="range" id="cur" min="0" max="1000" value="0">
+<div class="rr"><span class="l">Position x</span><span class="v hl" id="cx"></span></div>
+<div class="rr"><span class="l">Shear V</span><span class="v" id="cv"></span></div>
+<div class="rr"><span class="l">Moment M</span><span class="v" id="cm"></span></div>
+<div class="rr"><span class="l">Deflection δ</span><span class="v" id="cd"></span></div></div>
+<div class="card"><div class="ct">Support reactions</div><div id="reacDiv"></div></div>
+<div class="card"><div class="ct">Maximum and minimum values</div><div id="extDiv"></div></div>
+<div class="card"><div class="ct">Design checks</div><div id="chkDiv"></div></div>
+<div class="card"><div class="ct">Shear force diagram</div><canvas id="cvV"></canvas></div>
+<div class="card"><div class="ct">Bending moment diagram</div><canvas id="cvM"></canvas><div class="hint">Plotted on the tension side: sagging moment is drawn below the beam axis.</div></div>
+<div class="card"><div class="ct">Deflected shape</div><canvas id="cvD"></canvas></div>
+<div class="card"><div class="ct">Values along the beam</div><div class="tw" id="tblDiv"></div></div>
+<div class="card nobr"><div class="ct">Report</div>
+<button class="btn p" style="margin-top:0" onclick="saveHtml()">Download complete report (HTML)</button>
+<button class="btn" onclick="previewPrintReport()">Preview full report &amp; print A4 PDF</button>
+<button class="btn" onclick="shareRep()">Share report text with theory</button>
+<div class="hint"><b>Recommended:</b> Tap Preview full report &amp; print A4 PDF. The app opens a dedicated report-only view containing the cover, theory chapters, equations, FEM workflow, your calculated results and diagrams. Then tap Print / Save PDF. This avoids printing the BeamPro controls or Results screen.</div></div>
+</div></section>
+
+<section id="tab-projects" class="hidden">
+<div class="card"><div class="ct">Save project</div><label>Project name</label><input type="text" id="projName" placeholder="Example: Floor beam B2">
+<button class="btn p" onclick="saveProject()">Save project</button></div>
+<div class="card"><div class="ct">Saved projects <span class="pill" id="projCount">0</span></div><div id="projList"></div></div>
+<div class="card"><button class="btn d" style="margin-top:0" onclick="resetAll()">Reset everything</button></div>
+</section>
+
+<section id="tab-about" class="hidden">
+  <div class="card">
+    <div class="ct">About BeamPro</div>
+    <div style="font-size:22px;font-weight:800;color:#4FC3F7;margin-bottom:4px">BeamPro <span class="pill">FEM</span></div>
+    <p style="line-height:1.65;color:#ddd;margin:8px 0">BeamPro is a beam-analysis learning and preliminary engineering tool. It models beam supports and applied loads, then presents shear-force, bending-moment and deflection results using a direct-stiffness finite-element approach.</p>
+    <div class="rr"><span class="l">Created by</span><span class="v hl">YASHAVANTH AN</span></div>
+    <div class="rr"><span class="l">Discipline</span><span class="v">Civil Engineering</span></div>
+    <div class="rr"><span class="l">Application</span><span class="v">Beam analysis / FEM</span></div>
+  </div>
+  <div class="card">
+    <div class="ct">Main features</div>
+    <ul style="padding-left:20px;line-height:1.8;color:#ddd;margin:0">
+      <li>Beam length, material stiffness and section input</li>
+      <li>Pinned, roller and fixed support modelling</li>
+      <li>Point loads, uniformly distributed loads, varying distributed loads and applied moments</li>
+      <li>Dead and live load cases with user-selected factors</li>
+      <li>Support reactions, shear-force diagram and bending-moment diagram</li>
+      <li>Deflection profile, values along the beam and preliminary stress / deflection checks</li>
+      <li>Saved models and a printable professional analysis report</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="ct">How to use</div>
+    <ol style="padding-left:20px;line-height:1.8;color:#ddd;margin:0">
+      <li>Enter beam length, elastic modulus, second moment of area and section depth.</li>
+      <li>Select a support arrangement or add supports at the required positions.</li>
+      <li>Add the loads and assign each load to the dead or live load case.</li>
+      <li>Select the load factors appropriate to the analysis being performed.</li>
+      <li>Open Results and run the analysis. Review reactions, diagrams and design checks.</li>
+      <li>Save the project, then save the A4-ready report HTML to Downloads. Open that report and use Print → Save as PDF with A4 paper size.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <div class="ct">Theory behind BeamPro</div>
+    <p style="line-height:1.65;color:#ddd;margin:0">BeamPro uses the direct stiffness method with Euler-Bernoulli beam elements. The beam is divided into smaller elements. Each node has vertical displacement and rotation degrees of freedom. Element stiffness matrices are assembled into a global stiffness matrix, support restraints are applied, and the resulting simultaneous equations are solved to obtain nodal displacements. Reactions and internal forces are then recovered to prepare shear-force, bending-moment and deflection results.</p>
+    <p style="line-height:1.65;color:#ddd;margin:10px 0 0">The model assumes linear-elastic material response, small deflections and constant flexural rigidity along the beam. It neglects shear deformation and does not perform a complete structural code design.</p>
+  </div>
+  <div class="card">
+    <div class="ct">Engineering responsibility and limitations</div>
+    <p style="line-height:1.65;color:#ddd;margin:0">BeamPro is intended for educational use, preliminary analysis and engineering support. Results depend on the accuracy of the user-entered geometry, material properties, section properties, supports, loads and load factors. The current checks do not constitute a complete structural design and do not verify shear capacity, lateral-torsional buckling, local buckling, connection design, vibration, fire resistance, durability or all applicable code requirements. Independent verification by a qualified civil / structural engineer is required before using results for construction or safety-critical decisions.</p>
+  </div>
+  <div class="card">
+    <div class="ct">Paper-smart engineering</div>
+    <p style="line-height:1.65;color:#ddd;margin:0 0 10px">Use digital reports for review, storage and sharing whenever possible. Print only the pages needed for site work, signatures or formal submission. This paper-conscious workflow helps reduce avoidable printing; it does not claim that digital work has zero environmental impact.</p>
+    <div class="ct">Report quality checklist</div>
+    <p style="line-height:1.65;color:#ddd;margin:0">A report should identify the model, assumptions, loading, support conditions, analysis method, equilibrium status, key results and limitations. Check the input data and review the diagrams before sharing or relying on a report.</p>
+  </div>
+</section>
+</main>
+
+<script>
+function dflt(){return{L:6,E:200,I:8000,d:300,fy:165,lim:360,fD:1,fL:1,supports:[{x:0,type:'pinned'},{x:6,type:'roller'}],loads:[]};}
+var S=dflt(),R=null,curX=0;
+var $=function(i){return document.getElementById(i);};
+var r6=function(x){return Math.round(x*1e6)/1e6;};
+var EIv=function(){return S.E*S.I*0.01;};
+var fmt=function(v,n){return (Math.abs(v)<5e-7?0:v).toFixed(n==null?3:n);};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+function dismissIntro(){var el=$('welcomeHero');if(el)el.style.display='none';try{iappyx.save('beampro_intro_seen','1');}catch(e){}}
+
+
+/* ---------- bridge ---------- */
+function _initBridge(){if(typeof iappyx==='undefined'){setTimeout(_initBridge,50);return;}onReady();}
+window.addEventListener('load',function(){setTimeout(_initBridge,200);});
+function onReady(){
+  try{if(iappyx.load('beampro_intro_seen')==='1'&&$('welcomeHero'))$('welcomeHero').style.display='none';}catch(e){}
+  try{var sv=iappyx.load('beampro2_state');if(sv){var o=JSON.parse(sv);if(o&&o.L>0){S=Object.assign(dflt(),o);}}}catch(e){}
+  if(!S.supports)S.supports=[];if(!S.loads)S.loads=[];
+  R=null;renderAll();
+}
+function persist(){try{iappyx.save('beampro2_state',JSON.stringify(S));}catch(e){}}
+function changed(){R=null;persist();}
+
+/* ---------- toast ---------- */
+var tt=null;
+function toast(m){var t=$('__t');if(!t){t=document.createElement('div');t.id='__t';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f3460;color:#4FC3F7;padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:99;max-width:88%;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s;';document.body.appendChild(t);}
+  t.textContent=m;t.style.opacity='1';clearTimeout(tt);tt=setTimeout(function(){t.style.opacity='0';},2200);}
+
+/* ---------- model inputs ---------- */
+function bindInputs(){
+  var els=document.querySelectorAll('[data-k]');
+  for(var i=0;i<els.length;i++)(function(el){el.addEventListener('change',function(){
+    var v=parseFloat(el.value),k=el.dataset.k;
+    if(isNaN(v)||v<0||(v===0&&k!=='fD'&&k!=='fL')){el.value=S[k];toast('Enter a valid positive number');return;}
+    if(k==='L'){var o=S.L;S.supports.forEach(function(s){if(Math.abs(s.x-o)<1e-6)s.x=v;});}
+    S[k]=v;changed();renderAll();});})(els[i]);
+}
+function setE(v){S.E=v;changed();renderAll();}
+function setF(a,b){S.fD=a;S.fL=b;changed();renderAll();}
+function preset(n){var L=S.L;
+  S.supports=n==='simply'?[{x:0,type:'pinned'},{x:L,type:'roller'}]:n==='cant'?[{x:0,type:'fixed'}]:n==='fixed'?[{x:0,type:'fixed'},{x:L,type:'fixed'}]:[{x:0,type:'fixed'},{x:L,type:'roller'}];
+  changed();renderAll();}
+function addSupport(){
+  var x=parseFloat($('supX').value);
+  if(isNaN(x)||x<0||x>S.L){toast('Position must be between 0 and '+S.L+' m');return;}
+  S.supports=S.supports.filter(function(s){return Math.abs(s.x-x)>1e-6;});
+  S.supports.push({x:x,type:$('supType').value});S.supports.sort(function(a,b){return a.x-b.x;});
+  changed();renderAll();toast('Support added');}
+function delSupport(i){S.supports.splice(i,1);changed();renderAll();}
+function loadFields(){
+  var t=$('loadType').value,h='';
+  var n=function(id,l,v){return '<label>'+l+'</label><input type="number" id="'+id+'" step="0.1" value="'+v+'">';};
+  var rg=function(){return '<div class="row"><div>'+n('l_x1','From x1 (m)',0)+'</div><div>'+n('l_x2','To x2 (m)',S.L)+'</div></div>';};
+  if(t==='point')h=n('l_x','Position x (m)',r6(S.L/2))+n('l_P','Load P (kN)',10);
+  else if(t==='udl')h=rg()+n('l_w','Intensity w (kN/m)',5);
+  else if(t==='vdl')h=rg()+'<div class="row"><div>'+n('l_w1','w at x1 (kN/m)',0)+'</div><div>'+n('l_w2','w at x2 (kN/m)',10)+'</div></div>';
+  else h=n('l_x','Position x (m)',r6(S.L/2))+n('l_M','Moment M (kN·m)',5);
+  $('loadFields').innerHTML=h;}
+function addLoad(){
+  var t=$('loadType').value,l={type:t,c:$('loadCase').value},g=function(id){return parseFloat($(id).value);};
+  if(t==='point'){l.x=g('l_x');l.P=g('l_P');}
+  else if(t==='moment'){l.x=g('l_x');l.M=g('l_M');}
+  else{l.x1=g('l_x1');l.x2=g('l_x2');if(t==='udl')l.w=g('l_w');else{l.w1=g('l_w1');l.w2=g('l_w2');}}
+  for(var k in l)if(typeof l[k]==='number'&&isNaN(l[k])){toast('Fill in every field');return;}
+  if(t==='point'||t==='moment'){if(l.x<0||l.x>S.L){toast('Position must be within the beam');return;}}
+  else if(l.x1<0||l.x2>S.L||l.x1>=l.x2){toast('Range must be inside the beam, x1 < x2');return;}
+  S.loads.push(l);changed();renderAll();toast('Load added');}
+function delLoad(i){S.loads.splice(i,1);changed();renderAll();}
+function ldesc(l){
+  if(l.type==='point')return l.P+' kN at x = '+l.x+' m';
+  if(l.type==='udl')return l.w+' kN/m, x = '+l.x1+' to '+l.x2+' m';
+  if(l.type==='vdl')return l.w1+' to '+l.w2+' kN/m, x = '+l.x1+' to '+l.x2+' m';
+  return l.M+' kN·m (clockwise +) at x = '+l.x+' m';}
+var LN={point:'Point',udl:'Uniform',vdl:'Varying',moment:'Moment'};
+
+/* ---------- solver ---------- */
+function dint(l,a,b){var al=(l.w2-l.w1)/(l.x2-l.x1),u=b-l.x1,v=a-l.x1;
+  return [l.w1*(b-a)+al*(u*u-v*v)/2, l.w1*(b*b-a*a)/2+al*((b*b*b-a*a*a)/3-l.x1*(b*b-a*a)/2)];}
+function solve(A,b,tol){
+  var n=b.length,M=A.map(function(r,i){return r.concat([b[i]]);}),c,r,k;
+  for(c=0;c<n;c++){var m=c;for(r=c+1;r<n;r++)if(Math.abs(M[r][c])>Math.abs(M[m][c]))m=r;
+    if(Math.abs(M[m][c])<tol)throw new Error('Unstable structure. Add or fix supports so the beam cannot move freely.');
+    var t=M[c];M[c]=M[m];M[m]=t;
+    for(r=c+1;r<n;r++){var f=M[r][c]/M[c][c];if(f)for(k=c;k<=n;k++)M[r][k]-=f*M[c][k];}}
+  var x=new Array(n);
+  for(r=n-1;r>=0;r--){var s=M[r][n];for(k=r+1;k<n;k++)s-=M[r][k]*x[k];x[r]=s/M[r][r];}
+  return x;}
+
+function analyze(){
+  var L=S.L,ei=EIv(),i,j,e,k;
+  if(!(L>0&&ei>0))throw new Error('L, E and I must be positive');
+  if(S.supports.length<1)throw new Error('Add at least one support');
+  var pt=[],mo=[],ds=[];
+  S.loads.forEach(function(l){var f=l.c==='L'?S.fL:S.fD;
+    if(l.type==='point'){pt.push({x:l.x,F:-l.P*f});}
+    else if(l.type==='moment'){mo.push({x:l.x,m:-l.M*f});}
+    else{var a=l.type==='udl'?l.w:l.w1,b=l.type==='udl'?l.w:l.w2;ds.push({x1:l.x1,x2:l.x2,w1:-a*f,w2:-b*f});}});
+  var feat=[0,L];
+  S.supports.forEach(function(s){feat.push(s.x);});
+  pt.concat(mo).forEach(function(p){feat.push(p.x);});
+  ds.forEach(function(d){feat.push(d.x1,d.x2);});
+  if(feat.some(function(x){return x<-1e-9||x>L+1e-9;}))throw new Error('A support or load lies outside the beam length');
+  feat=feat.map(r6);var nodes=feat.slice();
+  for(i=1;i<40;i++){var g=r6(L*i/40);if(!feat.some(function(f){return Math.abs(f-g)<L/400;}))nodes.push(g);}
+  nodes.sort(function(a,b){return a-b;});
+  nodes=nodes.filter(function(v,i,a){return !i||v-a[i-1]>1e-9;});
+  var nN=nodes.length,nD=2*nN;
+  var ni=function(x){x=r6(x);for(var q=0;q<nN;q++)if(Math.abs(nodes[q]-x)<1e-6)return q;return -1;};
+  var K=[],F=new Array(nD).fill(0),feq=[];
+  for(i=0;i<nD;i++)K.push(new Array(nD).fill(0));
+  var ke=function(Le){var a=ei/(Le*Le*Le),b=6*Le*a,c=4*Le*Le*a,d=2*Le*Le*a,t=12*a;
+    return [[t,b,-t,b],[b,c,-b,d],[-t,-b,t,-b],[b,d,-b,c]];};
+  for(e=0;e<nN-1;e++){var kk=ke(nodes[e+1]-nodes[e]);for(i=0;i<4;i++)for(j=0;j<4;j++)K[2*e+i][2*e+j]+=kk[i][j];feq.push([0,0,0,0]);}
+  pt.forEach(function(p){F[2*ni(p.x)]+=p.F;});
+  mo.forEach(function(p){F[2*ni(p.x)+1]+=p.m;});
+  ds.forEach(function(d){for(var q=0;q<nN-1;q++){var xa=nodes[q],xb=nodes[q+1],md=(xa+xb)/2;
+    if(md<=d.x1||md>=d.x2)continue;
+    var Le=xb-xa,sl=(d.w2-d.w1)/(d.x2-d.x1),wi=d.w1+sl*(xa-d.x1),wj=d.w1+sl*(xb-d.x1);
+    var fc=[Le/20*(7*wi+3*wj),Le*Le/60*(3*wi+2*wj),Le/20*(3*wi+7*wj),-Le*Le/60*(2*wi+3*wj)];
+    for(var z=0;z<4;z++){F[2*q+z]+=fc[z];feq[q][z]+=fc[z];}}});
+  var fix=new Array(nD).fill(false);
+  S.supports.forEach(function(s){var q=ni(s.x);fix[2*q]=true;if(s.type==='fixed')fix[2*q+1]=true;});
+  var free=[];for(i=0;i<nD;i++)if(!fix[i])free.push(i);
+  var u=new Array(nD).fill(0),mx=0;
+  for(i=0;i<nD;i++)mx=Math.max(mx,K[i][i]);
+  if(free.length){
+    var ur=solve(free.map(function(a){return free.map(function(b){return K[a][b];});}),free.map(function(a){return F[a];}),mx*1e-9);
+    free.forEach(function(f,q){u[f]=ur[q];});}
+  var Rr=new Array(nD).fill(0);
+  for(i=0;i<nD;i++){var s=0;for(j=0;j<nD;j++)s+=K[i][j]*u[j];Rr[i]=s-F[i];}
+  var V1=[],M1=[],us=[];
+  for(e=0;e<nN-1;e++){var kq=ke(nodes[e+1]-nodes[e]),ue=[u[2*e],u[2*e+1],u[2*e+2],u[2*e+3]],fe=[0,0,0,0];
+    for(i=0;i<4;i++){for(j=0;j<4;j++)fe[i]+=kq[i][j]*ue[j];fe[i]-=feq[e][i];}
+    V1.push(fe[0]);M1.push(-fe[1]);us.push(ue);}
+  var ev=function(e,dx){var xi=nodes[e],x=xi+dx,Le=nodes[e+1]-xi,dV=0,dM=0;
+    ds.forEach(function(l){var a=Math.max(l.x1,xi),b=Math.min(x,l.x2);if(b<=a)return;var q=dint(l,a,b);dV+=q[0];dM+=x*q[0]-q[1];});
+    var t=dx/Le,t2=t*t,t3=t2*t,w=us[e];
+    var v=(1-3*t2+2*t3)*w[0]+Le*(t-2*t2+t3)*w[1]+(3*t2-2*t3)*w[2]+Le*(-t2+t3)*w[3];
+    return {V:V1[e]+dV,M:M1[e]+V1[e]*dx+dM,D:v*1000};};
+  var xs=[],Vs=[],Ms=[],Ds=[];
+  for(e=0;e<nN-1;e++){var Le2=nodes[e+1]-nodes[e],dxs=[0,Le2/4,Le2/2,3*Le2/4,Le2];
+    var v0=V1[e],v1=ev(e,Le2).V;if(v0*v1<0)dxs.push(Le2*v0/(v0-v1));
+    dxs.sort(function(a,b){return a-b;});
+    dxs.forEach(function(dx){var o=ev(e,dx);xs.push(nodes[e]+dx);Vs.push(o.V);Ms.push(o.M);Ds.push(o.D);});}
+  var ext=function(a){var mxI=0,mnI=0;for(var q=1;q<a.length;q++){if(a[q]>a[mxI])mxI=q;if(a[q]<a[mnI])mnI=q;}
+    return {max:a[mxI],xmax:xs[mxI],min:a[mnI],xmin:xs[mnI]};};
+  var reac=S.supports.map(function(s){var q=ni(s.x);return {x:s.x,type:s.type,Ry:Rr[2*q],Mz:Rr[2*q+1]};});
+  var sF=0,sM=0,aF=0,aM=0;
+  reac.forEach(function(r){sF+=r.Ry;sM+=r.Ry*r.x+(r.type==='fixed'?r.Mz:0);aF+=Math.abs(r.Ry);});
+  pt.forEach(function(p){sF+=p.F;sM+=p.F*p.x;aF+=Math.abs(p.F);aM+=Math.abs(p.F*p.x);});
+  mo.forEach(function(p){sM+=p.m;aM+=Math.abs(p.m);});
+  ds.forEach(function(d){var q=dint(d,d.x1,d.x2);sF+=q[0];sM+=q[1];aF+=Math.abs(q[0]);aM+=Math.abs(q[1]);});
+  var res={nodes:nodes,xs:xs,V:Vs,M:Ms,D:Ds,eV:ext(Vs),eM:ext(Ms),eD:ext(Ds),reac:reac,rF:sF,rM:sM,
+    ok:Math.abs(sF)<=1e-6*(1+aF)&&Math.abs(sM)<=1e-6*(1+aM+aF)};
+  res.at=function(x){var q=0;while(q<nN-2&&nodes[q+1]<=x+1e-9)q++;return ev(q,Math.min(Math.max(x-nodes[q],0),nodes[q+1]-nodes[q]));};
+  return res;}
+
+/* ---------- drawing ---------- */
+function pal(l){return l?{bg:'#ffffff',gr:'#dde3ee',ax:'#1f3a5f',tx:'#444',ti:'#0b3d91',V:'#12a35c',M:'#d64545',D:'#6a3fb5',bm:'#222',ld:'#c77700'}
+  :{bg:'#0d0d1a',gr:'#16264a',ax:'#4FC3F7',tx:'rgba(255,255,255,.55)',ti:'#4FC3F7',V:'#69F0AE',M:'#FF6B6B',D:'#B388FF',bm:'#eaeaea',ld:'#FFB74D'};}
+function ctxFor(cv,W,H){var d=window.devicePixelRatio||1;cv.width=W*d;cv.height=H*d;cv.style.height=H+'px';var c=cv.getContext('2d');c.setTransform(d,0,0,d,0,0);return c;}
+function arrow(c,x,y0,y1){c.beginPath();c.moveTo(x,y0);c.lineTo(x,y1);c.stroke();var s=y1>y0?1:-1;c.beginPath();c.moveTo(x,y1);c.lineTo(x-4,y1-6*s);c.lineTo(x+4,y1-6*s);c.closePath();c.fill();}
+function drawModel(cv,light,W){
+  var P=pal(light),H=190;W=W||cv.clientWidth||320;var c=ctxFor(cv,W,H),L=S.L,pl=34,pw=W-68,by=112;
+  var X=function(x){return pl+x/L*pw;};
+  c.fillStyle=P.bg;c.fillRect(0,0,W,H);
+  c.strokeStyle=P.bm;c.lineWidth=5;c.lineCap='round';c.beginPath();c.moveTo(X(0),by);c.lineTo(X(L),by);c.stroke();
+  c.font='11px -apple-system,sans-serif';c.textAlign='center';
+  S.supports.forEach(function(s){var x=X(s.x);c.strokeStyle=P.ax;c.lineWidth=2;
+    if(s.type==='fixed'){c.beginPath();c.moveTo(x,by-24);c.lineTo(x,by+24);c.stroke();var dr=s.x>L/2?1:-1;c.lineWidth=1;
+      for(var k=-24;k<24;k+=8){c.beginPath();c.moveTo(x,by+k+8);c.lineTo(x+dr*9,by+k);c.stroke();}}
+    else{c.beginPath();c.moveTo(x,by+3);c.lineTo(x-11,by+22);c.lineTo(x+11,by+22);c.closePath();c.stroke();
+      var gy=by+22;if(s.type==='roller'){c.beginPath();c.arc(x,by+27,4,0,6.3);c.stroke();gy=by+31;}
+      c.beginPath();c.moveTo(x-15,gy);c.lineTo(x+15,gy);c.stroke();}});
+  var mw=1e-9,mp=1e-9;
+  S.loads.forEach(function(l){if(l.type==='point')mp=Math.max(mp,Math.abs(l.P));else if(l.type==='udl')mw=Math.max(mw,Math.abs(l.w));else if(l.type==='vdl')mw=Math.max(mw,Math.abs(l.w1),Math.abs(l.w2));});
+  c.strokeStyle=P.ld;c.fillStyle=P.ld;c.lineWidth=2;c.textAlign='center';
+  S.loads.forEach(function(l){var t=l.type,x,len;
+    if(t==='point'){x=X(l.x);len=26+30*Math.abs(l.P)/mp;var up=l.P<0;
+      if(up)arrow(c,x,by+10+len,by+8);else arrow(c,x,by-10-len,by-8);
+      c.fillText(l.P+' kN',x,up?by+24+len:by-14-len);}
+    else if(t==='moment'){x=X(l.x);var cw=l.M>=0;c.beginPath();c.arc(x,by,15,cw?-2.6:-0.5,cw?0.3:-3.4,!cw);c.stroke();
+      c.fillText(l.M+' kN·m',x,by-24);}
+    else{var a=t==='udl'?l.w:l.w1,b=t==='udl'?l.w:l.w2,x1=X(l.x1),x2=X(l.x2),n=Math.max(2,Math.round((x2-x1)/16));
+      var hh=function(w){return 10+34*Math.abs(w)/mw;},pts=[];
+      for(var q=0;q<=n;q++){var xx=x1+(x2-x1)*q/n,w=a+(b-a)*q/n,sg=w<0?-1:1,hq=hh(w);
+        if(Math.abs(w)>1e-9){if(sg>0)arrow(c,xx,by-8-hq,by-8);else arrow(c,xx,by+8+hq,by+8);}pts.push([xx,by-8-hh(w)*(w<0?-1:1)]);}
+      c.beginPath();pts.forEach(function(p,q){if(q)c.lineTo(p[0],p[1]);else c.moveTo(p[0],p[1]);});c.stroke();
+      c.fillText(t==='udl'?a+' kN/m':a+' to '+b+' kN/m',(x1+x2)/2,by-58);}});
+  c.fillStyle=P.tx;c.textAlign='center';
+  c.strokeStyle=P.tx;c.lineWidth=1;c.beginPath();c.moveTo(X(0),H-16);c.lineTo(X(L),H-16);c.stroke();
+  c.fillText('L = '+L+' m',W/2,H-4);}
+
+function drawDiag(cv,key,light,W){
+  var P=pal(light),H=250;W=W||cv.clientWidth||320;var c=ctxFor(cv,W,H);
+  var pl=52,pr=16,pt=24,pb=26,pw=W-pl-pr,ph=H-pt-pb,L=S.L;
+  var a=R[key],sg=key==='M'?-1:1,xs=R.xs,ex=key==='V'?R.eV:key==='M'?R.eM:R.eD,col=P[key];
+  var pv=a.map(function(v){return sg*v;}),hi=Math.max.apply(null,pv.concat([0])),lo=Math.min.apply(null,pv.concat([0]));
+  if(hi-lo<1e-12){hi=1;lo=-1;}var pd=(hi-lo)*0.14;hi+=pd;lo-=pd;
+  var X=function(x){return pl+x/L*pw;},Y=function(v){return pt+(hi-v)/(hi-lo)*ph;};
+  c.fillStyle=P.bg;c.fillRect(0,0,W,H);
+  c.strokeStyle=P.gr;c.lineWidth=1;c.beginPath();
+  for(var i=0;i<=4;i++){c.moveTo(pl,pt+i*ph/4);c.lineTo(W-pr,pt+i*ph/4);}
+  for(i=0;i<=5;i++){c.moveTo(pl+i*pw/5,pt);c.lineTo(pl+i*pw/5,H-pb);}c.stroke();
+  c.setLineDash([4,4]);c.strokeStyle=P.tx;c.beginPath();
+  S.supports.forEach(function(s){c.moveTo(X(s.x),pt);c.lineTo(X(s.x),H-pb);});c.stroke();c.setLineDash([]);
+  var y0=Y(0);c.strokeStyle=P.ax;c.lineWidth=1.5;c.beginPath();c.moveTo(pl,y0);c.lineTo(W-pr,y0);c.stroke();
+  c.beginPath();c.moveTo(X(xs[0]),y0);for(i=0;i<xs.length;i++)c.lineTo(X(xs[i]),Y(pv[i]));c.lineTo(X(xs[xs.length-1]),y0);c.closePath();
+  c.globalAlpha=0.22;c.fillStyle=col;c.fill();c.globalAlpha=1;
+  c.beginPath();for(i=0;i<xs.length;i++){if(i)c.lineTo(X(xs[i]),Y(pv[i]));else c.moveTo(X(xs[i]),Y(pv[i]));}
+  c.strokeStyle=col;c.lineWidth=2.2;c.lineJoin='round';c.stroke();
+  c.font='10px -apple-system,sans-serif';c.fillStyle=P.tx;c.textAlign='right';
+  c.fillText('0',pl-6,y0+3);
+  c.textAlign='center';c.fillText('0',pl,H-pb+14);c.fillText(L+' m',W-pr-6,H-pb+14);
+  var lab=function(v,x){if(Math.abs(v)<1e-6)return;var px=Math.min(Math.max(X(x),pl+26),W-pr-26),py=Y(sg*v);
+    c.fillStyle=col;c.beginPath();c.arc(X(x),py,3.5,0,6.3);c.fill();
+    c.font='bold 11px -apple-system,sans-serif';c.textAlign='center';
+    c.fillText(fmt(v,2),px,sg*v>=0?py-8:py+16);};
+  lab(ex.max,ex.xmax);if(Math.abs(ex.min-ex.max)>1e-9)lab(ex.min,ex.xmin);
+  if(light===undefined||!light){var q=R.at(curX),cx=X(curX),cvv=key==='V'?q.V:key==='M'?q.M:q.D;
+    c.strokeStyle=P.ld;c.lineWidth=1.2;c.beginPath();c.moveTo(cx,pt);c.lineTo(cx,H-pb);c.stroke();
+    c.fillStyle=P.ld;c.beginPath();c.arc(cx,Y(sg*cvv),4,0,6.3);c.fill();}
+  c.fillStyle=P.ti;c.textAlign='left';c.font='bold 11px -apple-system,sans-serif';
+  c.fillText((key==='V'?'Shear V (kN)':key==='M'?'Moment M (kN·m)':'Deflection δ (mm)'),pl,14);}
+
+/* ---------- results ---------- */
+function runAnalysis(){
+  var st=$('status');st.className='status';st.textContent='Solving...';
+  try{R=analyze();}catch(e){R=null;$('resContent').classList.add('hidden');st.className='status neg';st.textContent=e.message||String(e);return;}
+  $('resContent').classList.remove('hidden');
+  st.className='status '+(R.ok?'pos':'neg');
+  st.textContent=R.ok?'Solved. Force and moment equilibrium verified.':'Solved, but equilibrium check failed. Review supports and loads.';
+  showResults();try{iappyx.vibration.vibrate('60');}catch(e){}}
+function rr(l,v,cls){return '<div class="rr"><span class="l">'+l+'</span><span class="v '+(cls||'')+'">'+v+'</span></div>';}
+var sc=function(v){return v>=0?'pos':'neg';};
+function checks(){
+  var Mm=Math.max(Math.abs(R.eM.max),Math.abs(R.eM.min)),dm=Math.max(Math.abs(R.eD.max),Math.abs(R.eD.min));
+  var sig=Mm*1e3*(S.d/2000)/(S.I*1e-8)/1e6,ut=sig/S.fy,dl=S.L*1000/S.lim,ud=dm/dl;
+  return {sig:sig,ut:ut,dm:dm,dl:dl,ud:ud,ratio:dm>1e-9?S.L*1000/dm:Infinity};}
+function readout(){var q=R.at(curX);
+  $('cx').textContent=fmt(curX,2)+' m';$('cv').textContent=fmt(q.V)+' kN';$('cm').textContent=fmt(q.M)+' kN·m';$('cd').textContent=fmt(q.D,2)+' mm';}
+function showResults(){
+  var h='';R.reac.forEach(function(r){var n=r.type[0].toUpperCase()+r.type.slice(1)+' at x = '+fmt(r.x,2)+' m';
+    h+=rr(n+', Ry',fmt(r.Ry)+' kN',sc(r.Ry));if(r.type==='fixed')h+=rr(n+', Mz (CCW +)',fmt(r.Mz)+' kN·m',sc(r.Mz));});
+  $('reacDiv').innerHTML=h;
+  var e=R;$('extDiv').innerHTML=
+    rr('Max shear',fmt(e.eV.max)+' kN @ '+fmt(e.eV.xmax,2)+' m',sc(e.eV.max))+rr('Min shear',fmt(e.eV.min)+' kN @ '+fmt(e.eV.xmin,2)+' m',sc(e.eV.min))+
+    rr('Max moment (sagging)',fmt(e.eM.max)+' kN·m @ '+fmt(e.eM.xmax,2)+' m',sc(e.eM.max))+rr('Min moment (hogging)',fmt(e.eM.min)+' kN·m @ '+fmt(e.eM.xmin,2)+' m',sc(e.eM.min))+
+    rr('Max deflection up',fmt(e.eD.max,2)+' mm @ '+fmt(e.eD.xmax,2)+' m','')+rr('Max deflection down',fmt(e.eD.min,2)+' mm @ '+fmt(e.eD.xmin,2)+' m','');
+  var k=checks(),bar=function(u){return '<div class="bar"><i style="width:'+Math.min(100,u*100)+'%;background:'+(u<=1?'#69F0AE':'#FF6B6B')+'"></i></div>';};
+  $('chkDiv').innerHTML=
+    rr('Max bending stress',fmt(k.sig,1)+' MPa',k.ut<=1?'pos':'neg')+rr('Allowable',fmt(S.fy,1)+' MPa','')+rr('Stress utilization',fmt(k.ut*100,1)+' %  '+(k.ut<=1?'OK':'FAIL'),k.ut<=1?'pos':'neg')+bar(k.ut)+
+    '<div style="height:10px"></div>'+rr('Max deflection',fmt(k.dm,2)+' mm','')+rr('Limit L/'+S.lim,fmt(k.dl,2)+' mm','')+rr('Deflection utilization',fmt(k.ud*100,1)+' %  '+(k.ud<=1?'OK':'FAIL'),k.ud<=1?'pos':'neg')+bar(k.ud)+
+    '<div class="hint">Elastic bending stress σ = M·(d/2)/I at the extreme fibre, using the current load factors. Shear and stability are not checked.</div>';
+  var rows=stations();$('tblDiv').innerHTML='<table><tr><th>x (m)</th><th>V (kN)</th><th>M (kN·m)</th><th>δ (mm)</th></tr>'+rows.map(function(r){return '<tr><td>'+r.join('</td><td>')+'</td></tr>';}).join('')+'</table>';
+  $('cur').value=Math.round(curX/S.L*1000);readout();drawAll();}
+function stations(){var o=[];for(var i=0;i<=10;i++){var x=S.L*i/10,q=R.at(x);o.push([fmt(x,2),fmt(q.V),fmt(q.M),fmt(q.D,2)]);}return o;}
+function drawAll(){if(!R)return;drawDiag($('cvV'),'V');drawDiag($('cvM'),'M');drawDiag($('cvD'),'D');}
+
+/* ---------- reports ---------- */
+function sections(){
+  var k=checks(),sx=[];
+  var maxM=Math.max(Math.abs(R.eM.max),Math.abs(R.eM.min));
+  var maxV=Math.max(Math.abs(R.eV.max),Math.abs(R.eV.min));
+  var maxD=Math.max(Math.abs(R.eD.max),Math.abs(R.eD.min));
+  var maxMx=Math.abs(R.eM.max)>=Math.abs(R.eM.min)?R.eM.xmax:R.eM.xmin;
+  var maxVx=Math.abs(R.eV.max)>=Math.abs(R.eV.min)?R.eV.xmax:R.eV.xmin;
+  var maxDx=Math.abs(R.eD.max)>=Math.abs(R.eD.min)?R.eD.xmax:R.eD.xmin;
+  sx.push({h:'Executive summary',rows:[
+    ['Prepared by','YASHAVANTH AN - Civil Engineering'],
+    ['Analysis type','Static linear-elastic beam bending analysis'],
+    ['Numerical method','Direct stiffness finite-element method'],
+    ['Beam length',fmt(S.L,2)+' m'],
+    ['Maximum absolute shear',fmt(maxV,3)+' kN at x = '+fmt(maxVx,2)+' m'],
+    ['Maximum absolute bending moment',fmt(maxM,3)+' kN.m at x = '+fmt(maxMx,2)+' m'],
+    ['Maximum absolute deflection',fmt(maxD,3)+' mm at x = '+fmt(maxDx,2)+' m'],
+    ['Equilibrium status',R.ok?'PASS - residual force and moment within numerical tolerance':'REVIEW REQUIRED - residual equilibrium check failed'],
+    ['Preliminary bending stress check',(k.ut<=1?'WITHIN':'EXCEEDS')+' the entered allowable value ('+fmt(k.ut*100,1)+'% utilization)'],
+    ['Preliminary deflection check',(k.ud<=1?'WITHIN':'EXCEEDS')+' the entered limit ('+fmt(k.ud*100,1)+'% utilization)']
+  ]});
+  sx.push({h:'Model and material properties',rows:[
+    ['Beam length, L',fmt(S.L,3)+' m'],
+    ['Elastic modulus, E',fmt(S.E,3)+' GPa'],
+    ['Second moment of area, I',fmt(S.I,3)+' cm4'],
+    ['Flexural rigidity, EI',fmt(EIv(),3)+' kN.m2'],
+    ['Section depth, d',fmt(S.d,2)+' mm'],
+    ['Entered allowable bending stress',fmt(S.fy,2)+' MPa'],
+    ['Deflection criterion','L/'+fmt(S.lim,0)],
+    ['Dead-load factor',fmt(S.fD,3)],
+    ['Live-load factor',fmt(S.fL,3)]
+  ]});
+  sx.push({h:'Support conditions',head:['Support type','Position x (m)','Model restraint'],rows:S.supports.map(function(s){return [s.type,fmt(s.x,3),s.type==='fixed'?'Vertical translation and rotation restrained':'Vertical translation restrained; rotation free'];})});
+  sx.push({h:'Applied loading schedule',head:['Load case','Load type','Description'],rows:S.loads.length?S.loads.map(function(l){return [l.c==='L'?'Live (L)':'Dead (D)',LN[l.type],ldesc(l)];}):[['-','No applied loads','No external loads were entered']]});
+  sx.push({h:'Support reactions',head:['Position x (m)','Support','Vertical reaction Ry (kN)','Reaction moment Mz (kN.m)'],rows:R.reac.map(function(r){return [fmt(r.x,3),r.type,fmt(r.Ry,4),r.type==='fixed'?fmt(r.Mz,4):'-'];})});
+  sx.push({h:'Critical response values',head:['Response quantity','Value','Location x (m)'],rows:[
+    ['Maximum shear',fmt(R.eV.max,4)+' kN',fmt(R.eV.xmax,3)],
+    ['Minimum shear',fmt(R.eV.min,4)+' kN',fmt(R.eV.xmin,3)],
+    ['Maximum sagging moment',fmt(R.eM.max,4)+' kN.m',fmt(R.eM.xmax,3)],
+    ['Maximum hogging moment',fmt(R.eM.min,4)+' kN.m',fmt(R.eM.xmin,3)],
+    ['Maximum upward deflection',fmt(R.eD.max,4)+' mm',fmt(R.eD.xmax,3)],
+    ['Maximum downward deflection',fmt(R.eD.min,4)+' mm',fmt(R.eD.xmin,3)]
+  ]});
+  sx.push({h:'Preliminary design checks',head:['Check item','Calculated value','Reference / criterion','Assessment'],rows:[
+    ['Extreme-fibre bending stress',fmt(k.sig,3)+' MPa',fmt(S.fy,3)+' MPa allowable',k.ut<=1?'WITHIN INPUT LIMIT':'EXCEEDS INPUT LIMIT'],
+    ['Bending stress utilization',fmt(k.ut*100,2)+'%','100% maximum for entered limit',k.ut<=1?'PASS':'REVIEW'],
+    ['Maximum absolute deflection',fmt(k.dm,3)+' mm',fmt(k.dl,3)+' mm (L/'+S.lim+')',k.ud<=1?'WITHIN INPUT LIMIT':'EXCEEDS INPUT LIMIT'],
+    ['Deflection utilization',fmt(k.ud*100,2)+'%','100% maximum for entered limit',k.ud<=1?'PASS':'REVIEW']
+  ]});
+  sx.push({h:'Global equilibrium verification',head:['Equilibrium quantity','Residual','Interpretation'],rows:[
+    ['Sum of vertical forces',fmt(R.rF,8)+' kN',Math.abs(R.rF)<1e-6*(1+Math.abs(R.rF))?'Near zero within numerical tolerance':'Check support reactions and applied loads'],
+    ['Sum of moments about origin',fmt(R.rM,8)+' kN.m',R.ok?'Near zero within numerical tolerance':'Check support reactions and applied loads'],
+    ['Overall solver check',R.ok?'PASS':'REVIEW','Numerical equilibrium test only; not an independent model validation']
+  ]});
+  sx.push({h:'Values along the beam',head:['x (m)','Shear V (kN)','Moment M (kN.m)','Deflection delta (mm)'],rows:stations()});
+  sx.push({h:'Analysis assumptions and limitations',rows:[
+    ['Structural idealization','Straight beam with constant E and I along the full span; vertical bending response only'],
+    ['Material behaviour','Linear elastic behaviour; a single user-entered elastic modulus is used'],
+    ['Deflection theory','Euler-Bernoulli beam theory; shear deformation is neglected'],
+    ['Displacements','Small-displacement, static analysis; dynamic and time-dependent effects are not included'],
+    ['Cross-section stress','Extreme-fibre stress is estimated using the entered section depth and second moment of area, with the neutral axis assumed at mid-depth'],
+    ['Not checked','Shear capacity, axial force, torsion, lateral-torsional buckling, local buckling, connections, vibration, fire, fatigue, durability and foundation/support adequacy'],
+    ['Design code','No code-specific load combinations or code-compliance certification is provided by this application']
+  ]});
+  return sx;
+}
+function reportText(){
+  var t='BEAMPRO - STRUCTURAL BEAM ANALYSIS REPORT\nPrepared by: YASHAVANTH AN - Civil Engineering\nGenerated: '+new Date().toLocaleString()+'\n';
+  t+='\nTHEORY AND METHOD\nThe beam is represented by Euler-Bernoulli beam finite elements. Each node has vertical displacement and rotation degrees of freedom. Element stiffness matrices are assembled into a global stiffness matrix. Applied point loads, moments and distributed loads are assembled into the global load vector. Prescribed support restraints are applied and the reduced system Kd = F is solved for nodal displacements. Reactions are recovered from R = Kd - F. Element end forces are used to obtain shear force and bending moment response; cubic beam interpolation is used for deflection between nodes.\n';
+  t+='\nKEY RELATIONSHIPS\nFlexural rigidity: EI. Element stiffness is proportional to EI/Le^3. Extreme-fibre elastic bending stress: sigma = M*c/I, with c = d/2. Entered deflection limit: delta_allow = L*1000/lim in mm. Utilization = calculated demand / entered limit.\n';
+  sections().forEach(function(sec){t+='\n'+sec.h.toUpperCase()+'\n';if(sec.head)t+=sec.head.join(' | ')+'\n';sec.rows.forEach(function(r){t+=r.join(' | ')+'\n';});});
+  return t+'\nIMPORTANT: Educational and preliminary analysis only. Independent verification by a qualified structural engineer and all applicable code checks are required before design or construction use.\n';
+}
+function reportHtml(){
+  var generated=new Date().toLocaleString();
+  var reportId='BP-'+new Date().toISOString().replace(/[-:TZ.]/g,'').slice(0,14);
+  var k=checks();
+  var maxV=Math.max(Math.abs(R.eV.max),Math.abs(R.eV.min));
+  var maxM=Math.max(Math.abs(R.eM.max),Math.abs(R.eM.min));
+  var maxD=Math.max(Math.abs(R.eD.max),Math.abs(R.eD.min));
+  var maxMx=Math.abs(R.eM.max)>=Math.abs(R.eM.min)?R.eM.xmax:R.eM.xmin;
+  var maxDx=Math.abs(R.eD.max)>=Math.abs(R.eD.min)?R.eD.xmax:R.eD.xmin;
+  var deadCount=S.loads.filter(function(l){return l.c==='D';}).length;
+  var liveCount=S.loads.filter(function(l){return l.c==='L';}).length;
+  var im=function(key){var cv=document.createElement('canvas');drawDiag(cv,key,true,900);return cv.toDataURL('image/png');};
+  var mc=document.createElement('canvas');drawModel(mc,true,900);
+  var all=sections();
+  var findSection=function(name){return all.filter(function(x){return x.h===name;})[0];};
+  var escv=function(v){return esc(String(v==null?'':v));};
+  var table=function(sec){
+    if(!sec)return '';
+    var h='<h3>'+escv(sec.h)+'</h3><table class="data">';
+    if(sec.head)h+='<thead><tr>'+sec.head.map(function(v){return '<th>'+escv(v)+'</th>';}).join('')+'</tr></thead>';
+    h+='<tbody>';
+    sec.rows.forEach(function(r){
+      if(sec.head){h+='<tr>'+r.map(function(v){return '<td>'+escv(v)+'</td>';}).join('')+'</tr>';}
+      else{h+='<tr><th class="rowhead">'+escv(r[0])+'</th><td colspan="'+Math.max(1,r.length-1)+'">'+r.slice(1).map(escv).join(' ')+'</td></tr>';}
+    });
+    return h+'</tbody></table>';
+  };
+  var metric=function(label,value,sub,kind){return '<div class="metric '+(kind||'')+'"><div class="metric-label">'+escv(label)+'</div><div class="metric-value">'+escv(value)+'</div><div class="metric-sub">'+escv(sub||'')+'</div></div>';};
+  var maxMomentType=Math.abs(R.eM.max)>=Math.abs(R.eM.min)?'sagging':'hogging';
+  var maxDefType=Math.abs(R.eD.max)>=Math.abs(R.eD.min)?'upward':'downward';
+  var story=[];
+  story.push('The analysis completed using the entered beam geometry, material stiffness, support restraints and factored load cases. The largest absolute bending moment is '+fmt(maxM,3)+' kN.m at x = '+fmt(maxMx,3)+' m. The governing bending response is '+maxMomentType+'.');
+  story.push('The largest absolute vertical deflection is '+fmt(maxD,3)+' mm ('+maxDefType+') at x = '+fmt(maxDx,3)+' m. The deflection result is compared with the user-entered span-based limit of L/'+fmt(S.lim,0)+'.');
+  story.push('The preliminary extreme-fibre bending stress is '+fmt(k.sig,3)+' MPa, representing '+fmt(k.ut*100,2)+'% of the entered allowable stress. This is a simplified elastic bending check and does not establish full member adequacy.');
+  story.push('The global equilibrium residual check '+(R.ok?'passed':'requires review')+'. A passing residual check confirms numerical force and moment balance for the assembled model; it does not independently verify the correctness of the model inputs or design assumptions.');
+
+  var h='<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BeamPro | Structural Beam Analysis Report</title><style>'+
+  '@page{size:A4 portrait;margin:13mm 13mm 15mm}'+
+  '*{box-sizing:border-box}html{background:#edf1f5}body{font-family:Arial,Helvetica,sans-serif;max-width:190mm;margin:0 auto;background:#fff;color:#1d2939;font-size:9pt;line-height:1.48;padding:0 0 8mm}'+
+  '.topline{height:7px;background:#143d68;margin-bottom:17px}.mast{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:1.5px solid #c7d2df;padding:0 0 12px;margin-bottom:15px}.brand{font-size:24pt;line-height:1;color:#12395f;font-weight:800;letter-spacing:-.5px}.brand small{display:block;font-size:9pt;letter-spacing:1.5px;color:#61748a;margin-top:6px;font-weight:700;text-transform:uppercase}.docmeta{text-align:right;font-size:8pt;color:#596b80;line-height:1.6}.docmeta strong{color:#213b5a}.title{font-size:18pt;color:#153c66;line-height:1.2;margin:7px 0 4px}.subtitle{font-size:9.5pt;color:#52657b;margin-bottom:12px}.authorline{font-size:9pt;font-weight:bold;color:#223b58;margin-bottom:13px}.notice{background:#f4f7fb;border-left:3px solid #c58d35;padding:9px 11px;margin:11px 0 15px;font-size:8.2pt;color:#49596c}.section{margin-top:15px}h3{break-after:avoid;page-break-after:avoid}.section-title{font-size:12pt;font-weight:800;color:#153e68;border-bottom:1.3px solid #b8c7d8;padding:0 0 5px;margin:0 0 8px;break-after:avoid}.section-no{display:inline-block;color:#a66a19;font-size:8pt;letter-spacing:1px;margin-right:7px}.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0 14px}.metric{border:1px solid #d6dee8;border-top:3px solid #315e8a;padding:8px 8px 7px;min-height:75px;break-inside:avoid}.metric.good{border-top-color:#28815d}.metric.review{border-top-color:#bd8232}.metric-label{font-size:7.2pt;text-transform:uppercase;letter-spacing:.45px;color:#65758a;font-weight:700}.metric-value{font-size:13pt;color:#173b60;font-weight:800;margin:5px 0 2px;overflow-wrap:anywhere}.metric-sub{font-size:7.2pt;color:#697789}.contents{margin-top:17px}.contents-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}.contents-item{font-size:8pt;color:#52657b;border-bottom:1px solid #e0e6ee;padding:4px 0}.model-image{width:100%;height:auto;max-height:59mm;object-fit:contain;display:block;border:1px solid #d9e1ea;padding:5px;margin:6px 0 9px;break-inside:avoid}.data{border-collapse:collapse;width:100%;font-size:8pt;margin:6px 0 13px;table-layout:fixed;overflow-wrap:anywhere}.data th,.data td{border:1px solid #d2dae4;padding:5px 6px;text-align:left;vertical-align:top}.data thead th{background:#eaf0f6;color:#173d65;font-weight:800}.data .rowhead{width:34%;background:#f5f7fa;color:#42556c;font-weight:700}.data tbody tr:nth-child(even) td{background:#fbfcfd}.data tbody tr{break-inside:avoid}.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.method-card{border:1px solid #d6dfe9;padding:8px 9px;break-inside:avoid}.method-card h4{font-size:8.8pt;color:#1c456f;margin:0 0 4px}.method-card p{font-size:8pt;color:#4b5b6d;margin:0}.equation{font-family:Courier New,monospace;background:#f3f6fa;border:1px solid #dbe2eb;padding:7px 9px;font-size:8pt;white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0 9px;color:#213a56}.steps{counter-reset:step;list-style:none;padding:0;margin:7px 0 13px;break-inside:avoid;page-break-inside:avoid}.steps li{counter-increment:step;position:relative;break-inside:avoid;page-break-inside:avoid;padding:0 0 7px 29px;color:#405267;font-size:8.2pt}.steps li:before{content:counter(step);position:absolute;left:0;top:0;width:19px;height:19px;line-height:19px;text-align:center;border-radius:50%;background:#eaf0f6;color:#214d78;font-weight:800;font-size:8pt}.insight{border:1px solid #d8e0e9;border-left:3px solid #315e8a;padding:8px 10px;margin:7px 0;font-size:8.2pt;color:#415267;break-inside:avoid}.figure{margin:10px 0 14px;break-inside:avoid;page-break-inside:avoid}.figure img{display:block;width:100%;max-height:70mm;object-fit:contain;border:1px solid #d6dee8;padding:4px;background:#fff}.figure figcaption{font-size:7.5pt;color:#66768a;margin-top:4px}.callout{border:1px solid #d8e0e9;padding:9px 10px;margin:9px 0;background:#fafbfd;font-size:8.2pt;color:#405267}.callout strong{color:#1e456e}.signoff{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:21px}.signline{border-top:1px solid #8b9aac;padding-top:5px;font-size:7.7pt;color:#617085}.footer{border-top:1px solid #cbd4df;padding-top:6px;margin-top:18px;font-size:7pt;color:#6b7888;display:flex;justify-content:space-between;gap:10px}.small{font-size:7.3pt;color:#697789}.page-break{break-before:page;page-break-before:always}.no-print{margin:14px 0;padding:10px;background:#eff5fb;border:1px solid #d4e0ed;font-size:9pt;color:#35516d}'+
+  '@media print{html{background:#fff}body{max-width:none;margin:0;padding:0;font-size:8.6pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}.metric-grid{gap:5px}.metric{min-height:66px;padding:6px}.metric-value{font-size:11.5pt}.section{margin-top:12px}.data{font-size:7.5pt}.data th,.data td{padding:4px 5px}.model-image{max-height:53mm}.figure img{max-height:66mm}.page-break{break-before:page;page-break-before:always}.footer{position:static}}'+
+  '@media screen{body{padding:18px 22px 30px;box-shadow:0 4px 28px rgba(20,45,70,.12);margin-top:18px;margin-bottom:18px}}'+
+  '@media(max-width:600px){.mast{display:block}.docmeta{text-align:left;margin-top:8px}.metric-grid{grid-template-columns:repeat(2,1fr)}.method-grid,.contents-grid{grid-template-columns:1fr}}'+
+  '</style></head><body><div class="topline"></div>'+
+  '<div class="mast"><div class="brand">BeamPro<small>Finite Element Beam Analysis</small></div><div class="docmeta"><strong>TECHNICAL ANALYSIS REPORT</strong><br>Document: '+escv(reportId)+'<br>Generated: '+escv(generated)+'<br>Software: BeamPro FEM</div></div>'+
+  '<div class="title">Structural Beam Analysis</div><div class="subtitle">Model definition, theoretical basis, numerical procedure and calculated response</div>'+
+  '<div class="authorline">Prepared by: YASHAVANTH AN &nbsp; | &nbsp; Civil Engineering</div>'+
+  '<div class="notice"><strong>Purpose and status:</strong> This document presents the inputs and numerical results produced by BeamPro for educational and preliminary engineering assessment. It is not a signed structural design certificate, independent checking certificate or declaration of compliance with a particular design code. All inputs and results require independent engineering review before practical use.</div>'+
+  '<div class="section"><div class="section-title"><span class="section-no">01</span>EXECUTIVE SUMMARY</div><div class="metric-grid">'+
+  metric('Beam span',fmt(S.L,2)+' m','Model length')+
+  metric('Maximum shear',fmt(maxV,2)+' kN','Absolute value')+
+  metric('Maximum moment',fmt(maxM,2)+' kN.m','Absolute value at x = '+fmt(maxMx,2)+' m')+
+  metric('Maximum deflection',fmt(maxD,2)+' mm','Absolute value at x = '+fmt(maxDx,2)+' m')+
+  metric('Bending stress',fmt(k.sig,1)+' MPa',fmt(k.ut*100,1)+'% of entered allowable',k.ut<=1?'good':'review')+
+  metric('Deflection check',fmt(k.dm,2)+' mm',fmt(k.ud*100,1)+'% of entered limit',k.ud<=1?'good':'review')+
+  metric('Equilibrium',R.ok?'PASS':'REVIEW',R.ok?'Numerical residual check passed':'Review force and moment balance',R.ok?'good':'review')+
+  metric('Load cases',S.loads.length+' loads',deadCount+' dead / '+liveCount+' live')+
+  '</div><div class="contents"><h3>REPORT CONTENTS</h3><div class="contents-grid">'+
+  '<div class="contents-item"><strong>01</strong> Executive summary</div><div class="contents-item"><strong>02</strong> Structural model</div>'+ 
+  '<div class="contents-item"><strong>03</strong> Theoretical background</div><div class="contents-item"><strong>04</strong> Numerical analysis procedure</div>'+ 
+  '<div class="contents-item"><strong>05</strong> Analysis results and diagrams</div><div class="contents-item"><strong>06</strong> Preliminary design assessment</div>'+ 
+  '<div class="contents-item"><strong>07</strong> Detailed response table</div><div class="contents-item"><strong>08</strong> Assumptions and engineering review</div>'+ 
+  '</div></div></div><div class="section page-break"><div class="section-title"><span class="section-no">02</span>STRUCTURAL MODEL</div><img class="model-image" src="'+mc.toDataURL('image/png')+'" alt="Beam, supports and applied load model">'+
+  table(findSection('Model and material properties'))+table(findSection('Support conditions'))+table(findSection('Applied loading schedule'))+
+  '</div>'+
+  '<div class="section page-break"><div class="section-title"><span class="section-no">03</span>THEORETICAL BACKGROUND</div>'+
+  '<p>A beam is a structural member that primarily resists transverse loading through internal shear force and bending moment. When a load is applied, the beam develops support reactions and an internal distribution of shear force and bending moment. The bending stiffness is represented by the flexural rigidity, <strong>EI</strong>, where E is the elastic modulus of the material and I is the second moment of area of the cross-section about the bending axis.</p>'+
+  '<div class="method-grid">'+
+  '<div class="method-card"><h4>Euler-Bernoulli beam theory</h4><p>The model assumes that plane cross-sections remain plane and perpendicular to the deflected beam centreline. Shear deformation is neglected, making the model most appropriate for slender beams where bending deformation is dominant.</p></div>'+
+  '<div class="method-card"><h4>Linear elastic behaviour</h4><p>Material response is assumed linear elastic with a constant user-entered elastic modulus. The analysis is static and uses small-displacement assumptions; nonlinear material and geometric effects are not represented.</p></div>'+
+  '<div class="method-card"><h4>Flexural rigidity</h4><p>EI controls resistance to bending. For a fixed loading and support arrangement, increasing E or I generally reduces the predicted deflection and changes the stiffness distribution of the model.</p></div>'+
+  '<div class="method-card"><h4>Boundary conditions</h4><p>Support restraints control the displacement and rotation degrees of freedom. A fixed support restrains vertical displacement and rotation; pinned and roller supports restrain vertical displacement while allowing rotation in this beam model.</p></div></div>'+
+  '<h3>Sign convention and units</h3><p>Downward loads are entered as positive values in the interface; negative load values represent upward actions. Applied moments are entered as positive clockwise. In the reported response, positive shear is defined by an upward force on the left face, positive bending moment represents sagging, and positive vertical deflection is upward (negative deflection is downward). The report uses kN for force, kN.m for moment, metres for span, millimetres for deflection, GPa for E and cm4 for I.</p>' +
+  '<h3>Governing relationships</h3><div class="equation">Flexural rigidity:              EI\nUnit conversion:                EI [kN.m2] = 0.01 * E [GPa] * I [cm4]\nElastic bending stress:          sigma = M*c/I, where c = d/2\nEuler-Bernoulli curvature:       curvature = M/EI\nDeflection limit entered:        delta_allow = (L*1000)/n  mm\nStress utilization:              sigma_calculated / sigma_allowable\nDeflection utilization:          delta_max / delta_allow</div>'+
+  '<p>In the stress calculation, M is the governing bending moment, I is the entered second moment of area and c is the distance from the neutral axis to the extreme fibre. BeamPro estimates c as one-half of the entered overall section depth. This is a simplified elastic bending comparison and depends on the adequacy of the entered section properties.</p>'+
+  '<h3>Finite-element idealization</h3><p>The beam is divided into a series of two-node beam elements. Each node has two degrees of freedom: vertical displacement and rotation. Each element uses a stiffness relationship based on its length and the beam flexural rigidity. The element stiffness contributions are assembled at shared nodes to form the global stiffness matrix.</p>'+
+  '<div class="equation">Element degrees of freedom:  {v1, theta1, v2, theta2}\nElement stiffness:              ke = (EI/Le^3) *\n  [ 12,  6Le, -12,  6Le ]\n  [ 6Le, 4Le2, -6Le, 2Le2 ]\n  [-12, -6Le,  12, -6Le ]\n  [ 6Le, 2Le2, -6Le, 4Le2 ]\nGlobal equilibrium equation:    K*d = F\nSupport reactions:               R = K*d - F</div>'+
+  '<p>Here, Le is the element length, ke is the element stiffness matrix, K is the assembled global stiffness matrix, d is the vector of nodal displacements and rotations, and F is the assembled load vector. The reduced equations are solved after applying the support restraints.</p>'+
+  '</div>'+
+  '<div class="section"><div class="section-title"><span class="section-no">04</span>NUMERICAL ANALYSIS PROCEDURE</div><ol class="steps">'+
+  '<li><strong>Model definition:</strong> Read the beam length, elastic modulus, second moment of area, section depth and user-entered checking limits.</li>'+
+  '<li><strong>Discretization:</strong> Create at least 40 equal beam subdivisions, adding nodes at support positions, point-load positions, moment positions and distributed-load boundaries.</li>'+
+  '<li><strong>Element stiffness:</strong> Form each Euler-Bernoulli beam element stiffness matrix using its length and the global flexural rigidity EI.</li>'+
+  '<li><strong>Load assembly:</strong> Apply point loads and applied moments at their nodes. Convert uniform and linearly varying distributed loads into equivalent element nodal load contributions. Apply the selected dead-load and live-load factors.</li>'+
+  '<li><strong>Boundary conditions:</strong> Restrain vertical translation at every support and restrain rotation at fixed supports. Solve the resulting system of simultaneous equations.</li>'+
+  '<li><strong>Response recovery:</strong> Recover support reactions and element end forces, then evaluate shear force, bending moment and vertical deflection along the beam.</li>'+
+  '<li><strong>Post-processing:</strong> Identify extreme response values, prepare the SFD, BMD and deflection plot, compare bending stress and deflection with the values entered by the user, and check global force and moment equilibrium.</li>'+
+  '</ol><div class="callout"><strong>Numerical note:</strong> The model uses a minimum of 40 equal subdivisions with additional nodes at important geometric and loading positions. Mesh density and idealization still influence numerical results; a convergence study is not automatically performed.</div></div>'+
+  '<div class="section page-break"><div class="section-title"><span class="section-no">05</span>ANALYSIS RESULTS</div>'+
+  table(findSection('Support reactions'))+table(findSection('Critical response values'))+
+  '<h3>Response interpretation</h3><div class="insight">'+story.map(function(p){return '<p>'+escv(p)+'</p>';}).join('')+'</div>'+
+  '<h3>Shear force diagram (SFD)</h3><figure class="figure"><img src="'+im('V')+'" alt="Shear force diagram"><figcaption>Figure 1. Shear force variation along the beam. The plot uses the sign convention stated in the report; reaction and applied-load locations create changes in the shear response.</figcaption></figure>'+
+  '<h3>Bending moment diagram (BMD)</h3><figure class="figure"><img src="'+im('M')+'" alt="Bending moment diagram"><figcaption>Figure 2. Bending moment variation along the beam. Positive moment represents sagging and negative moment represents hogging under the application sign convention.</figcaption></figure>'+
+  '<h3>Deflected shape</h3><figure class="figure"><img src="'+im('D')+'" alt="Deflected beam shape"><figcaption>Figure 3. Calculated vertical deflection profile. The displayed deflection is scaled for visualization; numerical values are reported in millimetres.</figcaption></figure>'+
+  '</div>'+
+  '<div class="section"><div class="section-title"><span class="section-no">06</span>PRELIMINARY DESIGN ASSESSMENT</div>'+table(findSection('Preliminary design checks'))+
+  '<h3>How the checks are interpreted</h3><p><strong>Bending stress:</strong> The absolute maximum bending moment is used to estimate extreme-fibre elastic bending stress using sigma = M*c/I. The calculated value is compared with the allowable stress entered by the user. A utilization not exceeding 100% means only that this simplified comparison is within the entered limit.</p>'+
+  '<p><strong>Deflection:</strong> The maximum absolute vertical deflection is compared with the entered span ratio. For a limit of L/n, the corresponding limit in millimetres is (L in metres x 1000)/n. A utilization not exceeding 100% means only that the computed displacement is within that entered criterion.</p>'+
+  '<div class="callout"><strong>Important:</strong> These are preliminary checks only. The stress calculation is not a complete member design, and passing the stress and deflection comparisons does not prove that the beam is safe or code-compliant. Shear resistance, stability, local effects, connections and all other relevant limit states must be checked separately.</div>'+
+  '</div>'+
+  '<div class="section page-break"><div class="section-title"><span class="section-no">07</span>DETAILED RESPONSE TABLE</div><p>The following table reports the response at equally spaced positions along the beam. These tabulated stations are provided for review and do not replace evaluation at all internal points or critical locations.</p>'+table(findSection('Values along the beam'))+table(findSection('Global equilibrium verification'))+
+  '<div class="section-title"><span class="section-no">08</span>ASSUMPTIONS, EXCLUSIONS AND ENGINEERING REVIEW</div>'+table(findSection('Analysis assumptions and limitations'))+
+  '<div class="callout"><strong>Required independent review:</strong> Confirm the structural idealization, loading data, load combinations, support conditions, section properties, material properties, numerical response and applicable local design standards. Review shear capacity, axial and torsional actions where relevant, lateral-torsional and local buckling, serviceability, connections, supports and foundations, durability and all project-specific requirements.</div>'+
+  '<p class="small"><strong>Prepared by:</strong> YASHAVANTH AN, Civil Engineering. <strong>Independent review:</strong> To be completed by the responsible qualified engineer where required.</p></div>'+
+  '<div class="no-print"><strong>Export to PDF:</strong> Select Print, set Paper size to A4, Orientation to Portrait, Scale to Fit / Default and enable background graphics if desired. Choose Save as PDF. Review page breaks before sharing.</div>'+
+  '</body></html>';
+  return h;
+}
+function needRes(){if(!R){toast('Run the analysis first');return true;}return false;}
+function saveHtml(){if(needRes())return;
+  try{var b=btoa(unescape(encodeURIComponent(reportHtml())));
+    if(typeof iappyx!=='undefined'&&iappyx.storage&&typeof iappyx.storage.saveToDownloads==='function'){
+      var ok=iappyx.storage.saveToDownloads('BeamPro_Report_'+Date.now()+'.html',b,'text/html');
+      toast(ok?'Complete report saved to Downloads.':'The app could not save the report. Try Preview & Print.');
+    }else{toast('Download is available inside the iappyxOS app. Use Preview & Print in this viewer.');}
+  }catch(e){toast('Save failed: '+(e.message||e));}}
+function shareRep(){if(needRes())return;try{iappyx.shareText(reportText(),'BeamPro Report');}catch(e){toast('Share failed');}}
+var bpPrintState=null;
+function previewPrintReport(){
+  if(needRes())return;
+  if(bpPrintState){toast('Report preview is already open');return;}
+  try{
+    var source=reportHtml();
+    var parsed=new DOMParser().parseFromString(source,'text/html');
+    var reportStyle=document.createElement('style');
+    reportStyle.id='bpDedicatedReportStyle';
+    reportStyle.textContent=(parsed.querySelector('style')?parsed.querySelector('style').textContent:'')+
+      '\n#bpPrintToolbar{position:sticky;top:0;z-index:99999;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px;background:#102b40;color:#fff;font:600 13px Arial,sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.2)}'+
+      '#bpPrintToolbar button{border:0;border-radius:9px;padding:11px 13px;background:#72d8c1;color:#082431;font-weight:800;font-size:12px}#bpPrintToolbar .close{background:#e5edf1;color:#19334a}'+
+      '@media print{@page{size:A4 portrait;margin:13mm}html,body{background:#fff!important;margin:0!important;padding:0!important;max-width:none!important;box-shadow:none!important}#bpPrintToolbar{display:none!important}#bpPrintContent{display:block!important;width:100%!important;margin:0!important;padding:0!important;box-shadow:none!important}.no-print{display:none!important}img{print-color-adjust:exact;-webkit-print-color-adjust:exact}}';
+    bpPrintState={nodes:[],style:reportStyle,scroll:window.scrollY};
+    while(document.body.firstChild)bpPrintState.nodes.push(document.body.removeChild(document.body.firstChild));
+    document.head.appendChild(reportStyle);
+    var toolbar=document.createElement('div');toolbar.id='bpPrintToolbar';
+    toolbar.innerHTML='<div><strong>BeamPro report preview</strong><br><small style="font-weight:400;opacity:.8">Full theory · results · diagrams · A4 portrait</small></div><div style="display:flex;gap:7px"><button id="bpPrintNow">Print / Save PDF</button><button class="close" id="bpPrintClose">Close</button></div>';
+    var content=document.createElement('div');content.id='bpPrintContent';content.innerHTML=parsed.body.innerHTML;
+    document.body.appendChild(toolbar);document.body.appendChild(content);
+    $('bpPrintNow').addEventListener('click',function(){
+      try{if(typeof iappyx!=='undefined'&&iappyx.device&&typeof iappyx.device.print==='function'){iappyx.device.print();}
+      else if(window.print){window.print();}else{toast('Print is not supported in this viewer. Download the report HTML and open it in Chrome.');}}
+      catch(e){toast('Print could not start. Download the report HTML and open it in Chrome.');}
+    });
+    $('bpPrintClose').addEventListener('click',closePrintPreview);
+    window.scrollTo(0,0);
+  }catch(e){closePrintPreview();toast('Could not prepare report: '+(e.message||e));}
+}
+function closePrintPreview(){
+  if(!bpPrintState)return;
+  try{while(document.body.firstChild)document.body.removeChild(document.body.firstChild);if(bpPrintState.style.parentNode)bpPrintState.style.parentNode.removeChild(bpPrintState.style);bpPrintState.nodes.forEach(function(n){document.body.appendChild(n);});window.scrollTo(0,bpPrintState.scroll||0);}catch(e){}
+  bpPrintState=null;
+}
+function printRep(){previewPrintReport();}
+
+/* ---------- projects ---------- */
+function getProj(){try{return JSON.parse(iappyx.load('beampro2_projects')||'[]');}catch(e){return [];}}
+function putProj(p){try{iappyx.save('beampro2_projects',JSON.stringify(p));}catch(e){toast('Save failed');}}
+function saveProject(){var n=$('projName').value.trim();if(!n){toast('Enter a project name');return;}
+  var p=getProj(),o={name:n,t:Date.now(),data:JSON.parse(JSON.stringify(S))},i=p.findIndex(function(x){return x.name===n;});
+  if(i>=0)p[i]=o;else p.push(o);putProj(p);$('projName').value='';renderProjects();toast('Project saved');}
+function loadProject(i){var p=getProj();if(!p[i])return;S=Object.assign(dflt(),p[i].data);changed();renderAll();toast('Project loaded');switchTab('setup');}
+function delProject(i){var p=getProj();p.splice(i,1);putProj(p);renderProjects();}
+function renderProjects(){var p=getProj();$('projCount').textContent=p.length;
+  $('projList').innerHTML=p.length?p.map(function(x,i){return '<div class="item"><div class="info"><b>'+esc(x.name)+'</b><br><span style="font-size:11px;color:rgba(255,255,255,.5)">L = '+x.data.L+' m, '+x.data.loads.length+' loads, '+new Date(x.t).toLocaleDateString()+'</span></div><button class="mini" onclick="loadProject('+i+')">Open</button><button class="x" onclick="delProject('+i+')">×</button></div>';}).join(''):'<div class="empty">No saved projects yet. Name your model above and save it.</div>';}
+var armed=false;
+function resetAll(){if(!armed){armed=true;toast('Tap again to reset the current model');setTimeout(function(){armed=false;},3000);return;}
+  armed=false;S=dflt();changed();renderAll();toast('Model reset');}
+
+/* ---------- render ---------- */
+function renderAll(){
+  var els=document.querySelectorAll('[data-k]');for(var i=0;i<els.length;i++)els[i].value=S[els[i].dataset.k];
+  $('eiOut').textContent=fmt(EIv(),0)+' kN·m²';
+  $('supCount').textContent=S.supports.length;
+  $('supList').innerHTML=S.supports.length?S.supports.map(function(s,i){return '<div class="item"><div class="info"><b>'+s.type[0].toUpperCase()+s.type.slice(1)+'</b> at x = '+fmt(s.x,2)+' m</div><button class="x" onclick="delSupport('+i+')">×</button></div>';}).join(''):'<div class="empty">No supports. Pick a preset or add one above.</div>';
+  $('loadCount').textContent=S.loads.length;
+  $('loadList').innerHTML=S.loads.length?S.loads.map(function(l,i){return '<div class="item"><div class="info"><b>'+LN[l.type]+'</b> <span class="pill">'+(l.c==='L'?'Live':'Dead')+'</span><br>'+esc(ldesc(l))+'</div><button class="x" onclick="delLoad('+i+')">×</button></div>';}).join(''):'<div class="empty">No loads yet. Add one above.</div>';
+  renderProjects();loadFields();
+  if(curX>S.L)curX=S.L;
+  drawModel($('modelCv'));
+  if(R)showResults();}
+function switchTab(n){
+  var t=document.querySelectorAll('.tab');for(var i=0;i<t.length;i++)t[i].classList.toggle('active',t[i].dataset.tab===n);
+  ['setup','loads','results','projects','about'].forEach(function(s){$('tab-'+s).classList.toggle('hidden',s!==n);});
+  $('modelCard').classList.toggle('hidden',n==='results'||n==='projects'||n==='about');
+  if(n==='setup'||n==='loads')drawModel($('modelCv'));
+  if(n==='results'){if(!R)runAnalysis();else drawAll();}
+  window.scrollTo(0,0);}
+
+var tb=document.querySelectorAll('.tab');
+for(var ti=0;ti<tb.length;ti++)(function(b){b.addEventListener('click',function(){switchTab(b.dataset.tab);});})(tb[ti]);
+$('loadType').addEventListener('change',loadFields);
+$('cur').addEventListener('input',function(e){curX=S.L*e.target.value/1000;if(R){readout();drawAll();}});
+var rz=null;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){drawModel($('modelCv'));drawAll();},200);});
+bindInputs();renderAll();
+</script>
+</body></html>
